@@ -22,7 +22,7 @@ checks its sha256 against `index.json`, and turns it on.
 All of these are official: made for iSekur by its author, Gerardo Canosa. Each one's About (in the
 plugin windows) says who made a plugin and how to reach them.
 
-Plugins are Lua 5.4, each in its own sandbox: no files, programs or sockets of their own (`isekur.http` fetches https pages for them, never from your LAN).
+Plugins are Lua 5.4, each in its own sandbox: no files, programs or sockets of their own (`isekur.http` fetches web pages for them, never from your LAN).
 [WRITING.md](WRITING.md) is the guide for writing one (events, the `isekur` API, settings,
 the catalog's rules). New plugins and fixes are welcome as pull requests; `python3 check.py`
 must pass.

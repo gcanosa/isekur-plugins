@@ -1,4 +1,4 @@
--- version: 1.3
+-- version: 1.4
 -- author: Gerardo Canosa
 -- contact: gera.canosa@gmail.com
 -- preview: in the webchat, a small preview under links people post. A card with the page's title, description and
@@ -30,23 +30,24 @@ local function ignored(url)
 end
 
 -- the links in a line, without mIRC formatting or the punctuation around them. All as https: "www.x.org" is
--- https://www.x.org, and http:// ones are fetched (and shown) over https, which nearly every site has
+-- https://www.x.org, and http:// ones are fetched (and shown) over https, which nearly every site has. The second
+-- list says which were http://: those are tried as posted when https fails (a site on a port without TLS)
 local function urls(text)
   text = text:gsub("\3%d%d?,%d%d?", ""):gsub("\3%d%d?", ""):gsub("[\2\3\15\22\29\30\31]", "")
-  local out, seen = {}, {}
+  local out, seen, plain = {}, {}, {}
   for word in text:gmatch("[^%s<>\"]+") do
-    local u = word:gsub("^[%(%['`]+", "")
+    local u, was = word:gsub("^[%(%['`]+", ""), false
     if u:lower():match("^www%.[%w%-]+%.%a") then u = "https://" .. u
-    elseif u:lower():match("^http://") then u = "https://" .. u:sub(8)
+    elseif u:lower():match("^http://") then u = "https://" .. u:sub(8) was = true
     elseif not u:lower():match("^https://") then u = nil end
     if u then
       u = u:gsub("[%.,;:!%?'%*]+$", "")
       if u:sub(-1) == ")" and not u:find("(", 1, true) then u = u:sub(1, -2) end  -- "(see https://x/y)"
       if u:sub(-1) == "]" and not u:find("[", 1, true) then u = u:sub(1, -2) end
-      if #u > 12 and not seen[u] then seen[u] = true, table.insert(out, u) end
+      if #u > 12 and not seen[u] then seen[u] = true, table.insert(out, u) plain[u] = was or nil end
     end
   end
-  return out
+  return out, plain
 end
 
 local function ext(url) return (url:match("^[^?#]*%.(%w+)$") or url:match("^[^?#]*%.(%w+)[?#]") or ""):lower() end
@@ -143,7 +144,8 @@ end
 isekur.on("message", function(e)
   if e.notice or not e.id then return end
   local srv, target, n = e.srv, e.target, 0
-  for _, u in ipairs(urls(e.text)) do
+  local list, plain = urls(e.text)
+  for _, u in ipairs(list) do
     if n >= isekur.opt("max", srv, target) then break end
     if not ignored(u) then
       local x = ext(u)
@@ -162,18 +164,21 @@ isekur.on("message", function(e)
         end)
       elseif isekur.opt("links", srv, target) and u:match("^https://") then
         n = n + 1
-        isekur.http(u, function(r)  -- what the link turns out to be decides: a page's card, or a picture or player
+        local function got(r)  -- what the link turns out to be decides: a page's card, or a picture or player
+          if r.error and plain[u] then plain[u] = nil return isekur.http("http://" .. u:sub(9), got) end  -- no TLS there
           if r.error or r.status ~= 200 then return end
+          local at = r.url:match("^https://") and r.url or u  -- after an http:// fetch: where it led (a short link's page)
           local t, em = r.type, nil
           if t == "text/html" or t == "application/xhtml+xml" or t == "" then
-            em = card(r.body, u)
+            em = card(r.body, at)
             if em and not isekur.opt("images", srv, target) then em.image = nil end
-          elseif t:match("^image/") then em = isekur.opt("images", srv, target) and {type = "image", url = u}
+          elseif t:match("^image/") then em = isekur.opt("images", srv, target) and {type = "image", url = at}
           elseif t:match("^audio/") or t:match("^video/") then
-            em = isekur.opt("media", srv, target) and {type = t:match("^(%a+)/"), url = u}
+            em = isekur.opt("media", srv, target) and {type = t:match("^(%a+)/"), url = at}
           end
           if em then put(srv, target, e.id, em) end
-        end)
+        end
+        isekur.http(u, got)
       end
     end
   end
