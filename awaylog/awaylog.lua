@@ -1,9 +1,10 @@
--- version: 1.2
+-- version: 1.3
 -- author: Gerardo Canosa
 -- contact: gera.canosa@gmail.com
 -- awaylog: while you're away (or nothing is attached), it keeps your highlights and private messages.
--- When you're back, a summary in the tab you're on: "While you were away (2h13m): 3 mentions in #isekur,
--- 2 PMs from bob", then the lines. /awaylog shows the last one again, /awaylog clear forgets it.
+-- When you're back, a summary in each network's console: "While you were away (2h13m): 3 mentions in #isekur,
+-- 2 PMs from bob", then the lines, and one line in the tab you're on pointing there.
+-- /awaylog shows the last one again in the tab you're on, /awaylog clear forgets it.
 isekur.setting("show", 10, "g", "lines in the summary when you're back (the rest: /awaylog)")
 isekur.setting("keep", 200, "g", "lines kept at most while you're away")
 isekur.setting("detached", true, "g", "also while nothing is attached (--daemon, browser closed), not only while away")
@@ -69,15 +70,24 @@ isekur.on("message", function(e)
   while #log > keep do table.remove(log, 1) end
 end)
 
--- back: the summary, once, in the tab you're looking at
+-- back: the summary, once, each network's in its console; a pointer in the tab you're looking at
 isekur.on("tick", function()
   if not present() then gone_at = gone_at or isekur.time(); return end
   local from = gone_at
   gone_at = nil
   if #log == 0 then return end
   last, last_from, last_to, log = log, from or log[1].t, isekur.time(), {}
+  local by, nets = {}, {}
+  for _, l in ipairs(last) do
+    if not by[l.srv] then by[l.srv] = {}; nets[#nets + 1] = l.srv end
+    table.insert(by[l.srv], l)
+  end
+  for _, srv in ipairs(nets) do show(by[srv], last_from, last_to, isekur.opt("show"), srv, nil) end
   local srv, name = isekur.active()
-  show(last, last_from, last_to, isekur.opt("show"), srv, name)
+  if not (#nets == 1 and srv == nets[1] and name == srv) then  -- a console tab is named after its network
+    isekur.print(srv, name, plural(#last, "message") .. " for you while you were away, in the console of " ..
+                 table.concat(nets, ", ") .. " (or /awaylog)", true)
+  end
 end)
 
 isekur.command("awaylog", "[clear]", function(args, srv, target)
