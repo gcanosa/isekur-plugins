@@ -1,13 +1,14 @@
--- version: 1.1
+-- version: 1.2
 -- preview: in the webchat, a small preview under links people post. A card with the page's title, description and
 -- picture, the picture itself for image links, and a player for audio and video links (mp3, ogg, opus, wav, m4a,
--- flac, mp4, webm...). The terminal doesn't change.
+-- flac, mp4, webm...). The terminal shows the cards as text (site, title, description), without pictures or players.
 -- iSekur fetches the pages (https only, never your LAN); pictures and media load in your browser from their own
 -- site, a player's only once you press play.
 isekur.setting("links", true, "c", "a card with the page's title, description and picture")
 isekur.setting("images", true, "c", "pictures: image links and the cards' pictures (your browser loads them from their site)")
 isekur.setting("media", true, "c", "a player for audio and video links (nothing loads until you press play)")
 isekur.setting("max", 3, "c", "previews per message at most")
+isekur.setting("terminal", true, "c", "show the link cards in the terminal too, as text")
 isekur.setting("size", "small", "c", "how big pictures and players are: small, medium or large")
 isekur.setting("ignore", "", "g", "domains never previewed, separated by spaces (their sub-domains too)")
 
@@ -133,6 +134,7 @@ end
 local function put(srv, target, id, em)  -- every preview carries the size it's shown at
   local size = isekur.opt("size", srv, target):lower()
   em.size = (size == "medium" or size == "large") and size or "small"
+  if not isekur.opt("terminal", srv, target) then em.term = false end
   return isekur.embed(srv, target, id, em)
 end
 
