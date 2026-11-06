@@ -80,6 +80,7 @@ query nick) are set when the event has them.
 | `away` | `away`: the server says you're away (306) or back (305) |
 | `command` | `name`, `args`: you typed a /command (not one a plugin runs). Return `true` to take it over |
 | `tick` | every second, no fields: check `isekur.opt("enabled", srv)` for the networks you act on |
+| `connect` | iSekur is about to connect to the network (no target): the moment for `isekur.proxy` |
 | `attach`, `detach` | a terminal or a browser came back / nobody is attached any more |
 
 ## Calls
@@ -93,6 +94,7 @@ query nick) are set when the event has them.
 | `isekur.exec(srv, target, "/cmd ...")` | runs a command as if typed in that tab (not `/plugin`) |
 | `isekur.http(url, fn)` | fetches an `https://` or `http://` URL in the background (redirects followed, the first 512 KB of the body, a 15s timeout); `fn(r)` gets `r.status` (0 when it failed), `r.type` (the content type, lowercase, no `; charset`), `r.body`, `r.url` (after redirects) and `r.error`. Hosts on loopback, private or link-local addresses are refused. At most 4 at once per plugin: it returns `false, why` past that, or for a URL that isn't http(s) |
 | `isekur.embed(srv, target, id, t)` | shows `t` under the message with that `id` (its `message` event's `e.id`) in the webchat. `t.type` is `"link"` (with `url`, `title`, and `desc`, `site`, `image` if you have them), `"image"`, `"audio"` or `"video"` (with `url`). The terminal shows `"link"` ones too, as text (site, title, description), unless `term` is `false`. Only http(s) URLs are shown, and everything as plain text. `false` when the line is gone |
+| `isekur.proxy(srv, url)` | in a `connect` handler: this connection goes through `url`, `socks5://`, `socks4://`, `http://` (`[user:pass@]host[:port]`) or `ssh://[user@]host[:port]` (ssh -W, keys or an agent). `nil` or `""`: direct. A bad URL is an error |
 | `isekur.store_get(key)`, `isekur.store_set(key, value)` | the plugin's own saved strings (`<name>.data`); `nil` removes a key. Written within 5 seconds, and when it's unloaded or iSekur exits |
 | `isekur.store_keys()` | every key in the store |
 | `isekur.active()` | the tab you're on: its network (nil for the main window) and its name |
@@ -104,7 +106,7 @@ query nick) are set when the event has them.
 | `isekur.rank(srv, chan, nick)` | the nick's prefix there (`"@"`, `"+"`, `""`), nil if it's not in the channel |
 | `isekur.away(srv)`, `isekur.attached()` | booleans |
 | `isekur.idle()`, `isekur.detached_for()`, `isekur.time()` | seconds since you typed, seconds nobody's been attached (0 while attached), the Unix time |
-| `isekur.name`, `isekur.api` | the plugin's name, the API version (2: `http`, `embed` and `e.id` came with it) |
+| `isekur.name`, `isekur.api` | the plugin's name, the API version (2: `http`, `embed` and `e.id` came with it; 3: `proxy` and the `connect` event) |
 
 ## The catalog
 
