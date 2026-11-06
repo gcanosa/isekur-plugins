@@ -5,6 +5,9 @@
   {"name": "awaylog", "version": "1.1", "api": 1,
    "description": "Your highlights and private messages while you were away or detached, summed up in the tab you're on when you come back",
    "sha256": "13dfafef98be1d63b2d4da45a71fd3caf23d5e97af45bfbda36d3595fc640983"},
+  {"name": "preview", "version": "1.0", "api": 2,
+   "description": "Webchat only: a preview under links people post. The page's title, description and picture, the picture itself for image links, a player for audio and video links",
+   "sha256": "81ae51196c11cc96d7786b23e30c93dca94ff4370e38dd9f1aec162afe25dfc6"},
   {"name": "seen", "version": "1.2", "api": 1,
    "description": "/seen nick: when and where someone was last seen talking, joining, leaving, quitting or renaming; answers !seen in channels you pick",
    "sha256": "11a5bd8a8c9fb32f6c1196b1729c536ec09151bbf3d5e88191370da89f932fba"}

@@ -9,6 +9,7 @@ checks its sha256 against `index.json`, and turns it on.
 |---|---|
 | **autoaway** | Away when you're idle or nothing is attached, back when you return; on or off per network, away and back announced if you like. |
 | **awaylog** | Your highlights and private messages while you were away or detached, summed up in the tab you're on when you come back. |
+| **preview** | Webchat only: under links people post, a card with the page's title, description and picture, the picture itself for image links, and a player for audio and video links (mp3, ogg, m4a, mp4, webm...). |
 | **seen** | `/seen nick`: when and where someone was last seen talking, joining, leaving, quitting or renaming; answers `!seen` where you turn it on. |
 
 ```
@@ -18,7 +19,7 @@ checks its sha256 against `index.json`, and turns it on.
 /plugin update
 ```
 
-Plugins are Lua 5.4, each in its own sandbox: no files, programs or sockets of their own.
+Plugins are Lua 5.4, each in its own sandbox: no files, programs or sockets of their own (`isekur.http` fetches https pages for them, never from your LAN).
 [WRITING.md](WRITING.md) is the guide for writing one (events, the `isekur` API, settings,
 the catalog's rules). New plugins and fixes are welcome as pull requests; `python3 check.py`
 must pass.
