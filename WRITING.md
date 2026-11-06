@@ -5,11 +5,15 @@ to your config (`~/.config/isekur/plugins/`). It runs once when it loads: there 
 settings, commands and event handlers. `/plugin enable <name>` loads it, `/plugin reload <name>`
 loads it again after you edit it.
 
-Put its version in a `-- version:` line near the top. iSekur reads it to tell an update in the
-catalog (a newer version) from a file you edited yourself (same version, other contents).
+Put its version in a `-- version:` line near the top, and who made it in `-- author:` and
+`-- contact:` lines (an email address or an https:// page). iSekur reads the version to tell an update in
+the catalog (a newer version) from a file you edited yourself (same version, other contents); the plugin
+windows' About shows the author and contact.
 
 ```lua
 -- version: 1.0
+-- author: Your Name
+-- contact: you@example.org
 -- hello.lua: /hello [nick], and a wave back at anyone who says "hi isekur"
 isekur.setting("greeting", "Hello", "c", "what /hello says first")  -- per channel, network or global
 
@@ -108,9 +112,12 @@ query nick) are set when the event has them.
 `<name>/<name>.lua`. To add a plugin, put it in `<name>/<name>.lua` and an entry in `index.json`:
 
 ```json
-{"name": "hello", "version": "1.0", "api": 1, "description": "Says hello",
- "sha256": "<shasum -a 256 hello/hello.lua>"}
+{"name": "hello", "version": "1.0", "api": 1, "author": "Your Name", "contact": "you@example.org",
+ "description": "Says hello", "sha256": "<shasum -a 256 hello/hello.lua>"}
 ```
+
+`author` and `contact` must be the file's own lines. `"official": true` marks a plugin made for iSekur by its
+author (the About says "Official iSekur plugin"); the catalog's maintainer sets it, not a pull request.
 
 The sha256 must match the file byte for byte: iSekur refuses the install otherwise. `version` must
 be the file's own `-- version:` line; raise both with every change, or nobody is offered the

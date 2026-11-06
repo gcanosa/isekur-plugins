@@ -1,4 +1,6 @@
--- version: 1.2
+-- version: 1.3
+-- author: Gerardo Canosa
+-- contact: gera.canosa@gmail.com
 -- preview: in the webchat, a small preview under links people post. A card with the page's title, description and
 -- picture, the picture itself for image links, and a player for audio and video links (mp3, ogg, opus, wav, m4a,
 -- flac, mp4, webm...). The terminal shows the cards as text (site, title, description), without pictures or players.

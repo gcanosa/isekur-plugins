@@ -1,4 +1,6 @@
--- version: 1.2
+-- version: 1.3
+-- author: Gerardo Canosa
+-- contact: gera.canosa@gmail.com
 -- seen: /seen nick says when and where a nick was last seen: talking, joining, leaving, quitting, renaming.
 -- It remembers what happens in the channels where it's on. With reply on in a channel
 -- (/plugin set seen@network/#channel reply on), !seen nick there gets an answer too.

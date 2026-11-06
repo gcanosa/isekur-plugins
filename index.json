@@ -1,14 +1,14 @@
 [
-  {"name": "autoaway", "version": "1.2", "api": 1,
+  {"name": "autoaway", "version": "1.3", "api": 1, "author": "Gerardo Canosa", "contact": "gera.canosa@gmail.com", "official": true,
    "description": "Away when you're idle or nobody is attached, back when you return; on or off per network, away and back announced per channel if you like",
-   "sha256": "db8fac55f5133367631e60c7a92c1d8babfdeb3f0b6d6ee71d54e4a2ccc6c004"},
-  {"name": "awaylog", "version": "1.1", "api": 1,
+   "sha256": "52f5a70bf4309b793dd868722a1434013c797f1634b474d1d7303d33e3c86a0f"},
+  {"name": "awaylog", "version": "1.2", "api": 1, "author": "Gerardo Canosa", "contact": "gera.canosa@gmail.com", "official": true,
    "description": "Your highlights and private messages while you were away or detached, summed up in the tab you're on when you come back",
-   "sha256": "13dfafef98be1d63b2d4da45a71fd3caf23d5e97af45bfbda36d3595fc640983"},
-  {"name": "preview", "version": "1.2", "api": 2,
+   "sha256": "f69b5b16ad4747616eeb1fd194b42dcfc1602b7e8883ac4b4ff8fa859c141e92"},
+  {"name": "preview", "version": "1.3", "api": 2, "author": "Gerardo Canosa", "contact": "gera.canosa@gmail.com", "official": true,
    "description": "A preview under links people post: in the webchat the page's title, description and picture, the picture itself for image links and a player for audio and video links; in the terminal the title and description as text",
-   "sha256": "20928b7317b9af9a40fd763bd96e3880ae978156e130454893c131f150d54ceb"},
-  {"name": "seen", "version": "1.2", "api": 1,
+   "sha256": "9838c59c49278daa038f6a53f09759e956d1683f0be8e2a0bb1979bdeb358402"},
+  {"name": "seen", "version": "1.3", "api": 1, "author": "Gerardo Canosa", "contact": "gera.canosa@gmail.com", "official": true,
    "description": "/seen nick: when and where someone was last seen talking, joining, leaving, quitting or renaming; answers !seen in channels you pick",
-   "sha256": "11a5bd8a8c9fb32f6c1196b1729c536ec09151bbf3d5e88191370da89f932fba"}
+   "sha256": "4f9af8f85b02954748ddcf242cea374f3d80cb8dc54dced5778aec3f87e89a83"}
 ]

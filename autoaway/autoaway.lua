@@ -1,4 +1,6 @@
--- version: 1.2
+-- version: 1.3
+-- author: Gerardo Canosa
+-- contact: gera.canosa@gmail.com
 -- autoaway: away when nobody is attached for 30s (--daemon with no browser open) or after
 -- `idle` minutes without typing; back when you return. A manual /away is left alone.
 isekur.setting("idle", 0, "n", "minutes without typing; 0: only when nothing is attached (after 30s)")

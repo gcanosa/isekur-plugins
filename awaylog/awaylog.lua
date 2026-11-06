@@ -1,4 +1,6 @@
--- version: 1.1
+-- version: 1.2
+-- author: Gerardo Canosa
+-- contact: gera.canosa@gmail.com
 -- awaylog: while you're away (or nothing is attached), it keeps your highlights and private messages.
 -- When you're back, a summary in the tab you're on: "While you were away (2h13m): 3 mentions in #isekur,
 -- 2 PMs from bob", then the lines. /awaylog shows the last one again, /awaylog clear forgets it.
