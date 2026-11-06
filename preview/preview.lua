@@ -1,4 +1,4 @@
--- version: 1.0
+-- version: 1.1
 -- preview: in the webchat, a small preview under links people post. A card with the page's title, description and
 -- picture, the picture itself for image links, and a player for audio and video links (mp3, ogg, opus, wav, m4a,
 -- flac, mp4, webm...). The terminal doesn't change.
@@ -26,14 +26,22 @@ local function ignored(url)
   return false
 end
 
--- the URLs in a line, without mIRC formatting or the punctuation that ends a sentence
+-- the links in a line, without mIRC formatting or the punctuation around them. All as https: "www.x.org" is
+-- https://www.x.org, and http:// ones are fetched (and shown) over https, which nearly every site has
 local function urls(text)
   text = text:gsub("\3%d%d?,%d%d?", ""):gsub("\3%d%d?", ""):gsub("[\2\3\15\22\29\30\31]", "")
   local out, seen = {}, {}
-  for raw in text:gmatch("https?://[^%s<>\"]+") do
-    local u = raw:gsub("[%.,;:!%?'%*]+$", "")
-    if u:sub(-1) == ")" and not u:find("(", 1, true) then u = u:sub(1, -2) end  -- "(see https://x/y)"
-    if not seen[u] then seen[u] = true, table.insert(out, u) end
+  for word in text:gmatch("[^%s<>\"]+") do
+    local u = word:gsub("^[%(%['`]+", "")
+    if u:lower():match("^www%.[%w%-]+%.%a") then u = "https://" .. u
+    elseif u:lower():match("^http://") then u = "https://" .. u:sub(8)
+    elseif not u:lower():match("^https://") then u = nil end
+    if u then
+      u = u:gsub("[%.,;:!%?'%*]+$", "")
+      if u:sub(-1) == ")" and not u:find("(", 1, true) then u = u:sub(1, -2) end  -- "(see https://x/y)"
+      if u:sub(-1) == "]" and not u:find("[", 1, true) then u = u:sub(1, -2) end
+      if #u > 12 and not seen[u] then seen[u] = true, table.insert(out, u) end
+    end
   end
   return out
 end
