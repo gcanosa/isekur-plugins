@@ -1,4 +1,4 @@
--- version: 1.3
+-- version: 1.4
 -- author: Gerardo Canosa
 -- contact: gera.canosa@gmail.com
 -- awaylog: while you're away (or nothing is attached), it keeps your highlights and private messages.
@@ -31,11 +31,15 @@ end
 
 local function plural(n, word) return n .. " " .. word .. (n == 1 and "" or "s") end
 
--- the head line: who and where, in the order they first came
-local function head(lines, from, to)
-  local count, order, nets = {}, {}, {}
-  for _, l in ipairs(lines) do nets[l.srv] = true end
-  local multi = next(nets) and next(nets, next(nets)) ~= nil
+local function multinet(lines)
+  for _, l in ipairs(lines) do if l.srv ~= lines[1].srv then return true end end
+  return false
+end
+
+-- the head line: who and where, in the order they first came; named: the network always (outside its console)
+local function head(lines, from, to, named)
+  local count, order = {}, {}
+  local multi = named or multinet(lines)
   for _, l in ipairs(lines) do
     local k = l.srv .. "\t" .. (l.chan and l.target or l.nick)
     if not count[k] then count[k] = 0; order[#order + 1] = {k, l} end
@@ -50,16 +54,17 @@ local function head(lines, from, to)
   return "While you were away (" .. dur(to - from) .. "): " .. table.concat(parts, ", ")
 end
 
-local function line(l)
+local function line(l, multi)
   local who = l.action and ("* " .. l.nick .. " ") or ("<" .. l.nick .. "> ")
-  return "  " .. isekur.date(l.t) .. "  " .. (l.chan and l.target .. " " or "") .. who .. l.text
+  return "  " .. isekur.date(l.t) .. "  " .. (multi and l.srv .. " " or "") .. (l.chan and l.target .. " " or "") .. who .. l.text
 end
 
-local function show(lines, from, to, max, srv, name)
-  isekur.print(srv, name, head(lines, from, to), true)
+local function show(lines, from, to, max, srv, name, named)
+  local multi = multinet(lines)
+  isekur.print(srv, name, head(lines, from, to, named), true)
   local first = math.max(1, #lines - max + 1)
   if first > 1 then isekur.print(srv, name, "  … " .. (first - 1) .. " earlier: /awaylog") end
-  for i = first, #lines do isekur.print(srv, name, line(lines[i])) end
+  for i = first, #lines do isekur.print(srv, name, line(lines[i], multi)) end
 end
 
 isekur.on("message", function(e)
@@ -93,7 +98,7 @@ end)
 isekur.command("awaylog", "[clear]", function(args, srv, target)
   if args == "clear" then last = {}; isekur.print(srv, target, "awaylog: forgotten"); return end
   if args ~= "" then return "Usage: /awaylog [clear]" end
-  if #log > 0 then show(log, gone_at or log[1].t, isekur.time(), #log, srv, target); return end  -- still away: what came so far
+  if #log > 0 then show(log, gone_at or log[1].t, isekur.time(), #log, srv, target, true); return end  -- still away: what came so far
   if #last == 0 then isekur.print(srv, target, "awaylog: nothing came while you were away"); return end
-  show(last, last_from, last_to, #last, srv, target)
+  show(last, last_from, last_to, #last, srv, target, true)
 end)
