@@ -109,7 +109,11 @@ query nick) are set when the event has them.
 | `isekur.rank(srv, chan, nick)` | the nick's prefix there (`"@"`, `"+"`, `""`), nil if it's not in the channel |
 | `isekur.away(srv)`, `isekur.attached()` | booleans |
 | `isekur.idle()`, `isekur.detached_for()`, `isekur.time()` | seconds since you typed, seconds nobody's been attached (0 while attached), the Unix time |
-| `isekur.name`, `isekur.api` | the plugin's name, the API version (2: `http`, `embed` and `e.id` came with it; 3: `proxy` and the `connect` event; 4: the `raw` and `paste` events, `e.opened`, `isekur.nick` and `http`'s `body`) |
+| `isekur.inactive()` | seconds since the last key, click or mouse move in the terminal or the webchat (`idle()` counts only lines you send) |
+| `isekur.screen(fn, fps)` | a screensaver: the terminal and the webchat show only your frames, on black, `fps` a second (1-30, default 15), until a key, click or mouse move on either side. `fn(e)` draws one frame with `isekur.put`, from scratch each time; `e.w`, `e.h` (in cells), `e.ui` (`"term"` or `"web"`: each at its own size, so keep their states apart) and `e.t` (ms since it started). `true` if it started: never while no terminal or webchat is attached (it ends when the last one goes). An error in `fn` ends it. `isekur.screen(false)` ends yours, `isekur.screen()` says whether one is up |
+| `isekur.put(x, y, text, color)` | in a frame: `text` from cell `x`, `y` (0-based, clipped), `color` `0xRRGGBB` (default white). `x` and `y` may be fractions: the webchat draws there, between cells, so slow motion is smooth; the terminal draws in the cell. The webchat gets only the cells that changed, so colors in a few steps instead of a smooth fade cost it less |
+| `isekur.lock()` | locks the terminal and the webchat like `/lock`, when a lock password is set; `false` when there's none. Under a screensaver the password box shows once it ends |
+| `isekur.name`, `isekur.api` | the plugin's name, the API version (2: `http`, `embed` and `e.id` came with it; 3: `proxy` and the `connect` event; 4: the `raw` and `paste` events, `e.opened`, `isekur.nick` and `http`'s `body`; 5: `screen`, `put`, `inactive` and `lock`) |
 
 ## The catalog
 
