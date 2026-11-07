@@ -10,6 +10,7 @@ checks its sha256 against `index.json`, and turns it on.
 | **autoaway** | Away when you're idle or nothing is attached, back when you return; on or off per network, away and back announced if you like. |
 | **awaylog** | Your highlights and private messages while you were away or detached, summed up in each network's console when you come back, with a pointer in the tab you're on. |
 | **preview** | Under links people post, in the webchat: a card with the page's title, description and picture, the picture itself for image links, and a player for audio and video links (mp3, ogg, m4a, mp4, webm...). In the terminal, the title and description as text. |
+| **push** | Your highlights and private messages pushed to your phone, tablet or browser while you're away or nothing is attached: ntfy (no account: the ntfy app or ntfy.sh in a browser, `/plugin set push topic <name>`) or a Telegram bot. `/push test` checks it. |
 | **proxy** | Connects the networks you pick through a SOCKS4/SOCKS5 or HTTP proxy, or an SSH jump host (`ssh -W`); the others stay direct. |
 | **seen** | `/seen nick`: when and where someone was last seen talking, joining, leaving, quitting or renaming; answers `!seen` where you turn it on. |
 

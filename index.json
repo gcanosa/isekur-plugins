@@ -13,5 +13,8 @@
    "sha256": "4f9af8f85b02954748ddcf242cea374f3d80cb8dc54dced5778aec3f87e89a83"},
   {"name": "proxy", "version": "1.0", "api": 3, "author": "Gerardo Canosa", "contact": "gera.canosa@gmail.com", "official": true,
    "description": "Connects the networks you pick through a SOCKS4/SOCKS5 or HTTP proxy, or an SSH jump host; the others stay direct",
-   "sha256": "998c3d0570fea6bf2dbcfe94d7599cd8bf1924de32df3b06cf0ebf855495982b"}
+   "sha256": "998c3d0570fea6bf2dbcfe94d7599cd8bf1924de32df3b06cf0ebf855495982b"},
+  {"name": "push", "version": "1.0", "api": 2, "author": "Gerardo Canosa", "contact": "gera.canosa@gmail.com", "official": true,
+   "description": "Your highlights and private messages pushed to your phone, tablet or browser while you're away or nothing is attached: ntfy (no account) or a Telegram bot; /push test",
+   "sha256": "4970e3568f1e0a8df5d8192aec8538e1f77295a84e2f7f4e2a0f90d4738bb405"}
 ]
