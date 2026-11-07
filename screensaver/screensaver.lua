@@ -1,11 +1,11 @@
--- version: 1.0
+-- version: 1.1
 -- author: Gerardo Canosa
 -- contact: gera.canosa@gmail.com
 -- screensaver: after `idle` minutes without a key, click or mouse move, the terminal and the webchat
 -- show digital rain, floating particles or a quiet sky of drifting stars until you touch something;
 -- with lock on, waking asks for the lock password. /screensaver [matrix|particles|stars] starts one now.
 isekur.setting("idle", 10, "g", "minutes without a key, click or mouse move (terminal or webchat); 0: only /screensaver")
-isekur.setting("saver", "random", "g", "matrix, particles, stars, or random: another one each time")
+isekur.setting("saver", "random", "g", "which one; random: another each time", {"random", "matrix", "particles", "stars"})
 isekur.setting("lock", false, "g", "waking asks for the lock password (the one /lock sets)")
 
 local function rgb(r, g, b) return math.floor(r) * 65536 + math.floor(g) * 256 + math.floor(b) end

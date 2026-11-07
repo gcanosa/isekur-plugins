@@ -29,7 +29,7 @@
   {"name": "pasteguard", "version": "1.0", "api": 4, "author": "Gerardo Canosa", "contact": "gera.canosa@gmail.com", "official": true,
    "description": "A paste of several lines into a channel or query becomes a pastebin link (paste.rs by default), so you don't flood",
    "sha256": "7b52b13626bf7bf9d9e63335be32ac761678e0cca7fd278ab5afb80ca7078d7f"},
-  {"name": "screensaver", "version": "1.0", "api": 5, "author": "Gerardo Canosa", "contact": "gera.canosa@gmail.com", "official": true,
+  {"name": "screensaver", "version": "1.1", "api": 5, "author": "Gerardo Canosa", "contact": "gera.canosa@gmail.com", "official": true,
    "description": "A screensaver for the terminal and the webchat after some idle minutes: digital rain, floating particles or a quiet sky of drifting stars; with lock on, waking asks for the lock password",
-   "sha256": "aee1554f58a12035864a01b5928d3a4dc8eb41d1040288295d123a6d9c696514"}
+   "sha256": "6f6e8316639571c340306c1260640916d45ba85f2f6e5544b19b2cc9a4ad9c01"}
 ]

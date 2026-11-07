@@ -58,10 +58,12 @@ greeting = Welcome
 `enabled` works the same way: a plugin is loaded when any of its sections has `enabled = on`, and its
 events only come from the networks and channels where `enabled` resolves to on.
 
-- `isekur.setting(key, default, scope, help)`: declare an option. `help` is a short line the plugin
+- `isekur.setting(key, default, scope, help, choices)`: declare an option. `help` is a short line the plugin
   windows show next to it: what it is and its unit ("minutes without typing; 0: never"). `scope` is `"g"` (global only), `"n"`
   (up to the network) or `"c"` (up to the channel, the default). The default's type is what
-  `opt` returns: a boolean (`on`/`true`/`yes`/`1` are true), a number or a string.
+  `opt` returns: a boolean (`on`/`true`/`yes`/`1` are true), a number or a string. `choices`, a list of
+  strings (`{"random", "matrix", "stars"}`), are the only values it takes: `/plugin set` refuses others, the
+  terminal's plugin window steps through them with Space or Enter and the webchat's shows a list.
 - `isekur.opt(key, srv, target)`: the option's value there; `srv`/`target` may be nil. `enabled` is
   always a boolean: whether the plugin is on there.
 
