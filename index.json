@@ -16,5 +16,17 @@
    "sha256": "998c3d0570fea6bf2dbcfe94d7599cd8bf1924de32df3b06cf0ebf855495982b"},
   {"name": "push", "version": "1.0", "api": 2, "author": "Gerardo Canosa", "contact": "gera.canosa@gmail.com", "official": true,
    "description": "Your highlights and private messages pushed to your phone, tablet or browser while you're away or nothing is attached: ntfy (no account) or a Telegram bot; /push test",
-   "sha256": "4970e3568f1e0a8df5d8192aec8538e1f77295a84e2f7f4e2a0f90d4738bb405"}
+   "sha256": "4970e3568f1e0a8df5d8192aec8538e1f77295a84e2f7f4e2a0f90d4738bb405"},
+  {"name": "keepnick", "version": "1.0", "api": 4, "author": "Gerardo Canosa", "contact": "gera.canosa@gmail.com", "official": true,
+   "description": "Takes your nick back once it's free: when its holder leaves, or by asking the server every 30 seconds",
+   "sha256": "c9ac486ed839b04f8dc7ee9713ce0f9d0868e6c1a1a87d09dd71b4a43f98d648"},
+  {"name": "remind", "version": "1.0", "api": 1, "author": "Gerardo Canosa", "contact": "gera.canosa@gmail.com", "official": true,
+   "description": "/remind 10m text, /remind 18:30 text: a reminder in that tab, saved across restarts; /remind lists them",
+   "sha256": "fe37f98e3f06615869daf16608baad17521c487d30ca7a1cde1f0e38b2563101"},
+  {"name": "pmguard", "version": "1.0", "api": 4, "author": "Gerardo Canosa", "contact": "gera.canosa@gmail.com", "official": true,
+   "description": "Private messages from people you haven't let through are held, not opened; /pmguard allow nick opens the query with what they said",
+   "sha256": "307836e32af6c424c29ece5528f8017d3672e86c49849e7db7f54eeeccefe8a3"},
+  {"name": "pasteguard", "version": "1.0", "api": 4, "author": "Gerardo Canosa", "contact": "gera.canosa@gmail.com", "official": true,
+   "description": "A paste of several lines into a channel or query becomes a pastebin link (paste.rs by default), so you don't flood",
+   "sha256": "7b52b13626bf7bf9d9e63335be32ac761678e0cca7fd278ab5afb80ca7078d7f"}
 ]

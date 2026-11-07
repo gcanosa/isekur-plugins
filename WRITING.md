@@ -72,13 +72,15 @@ query nick) are set when the event has them.
 
 | event | fields |
 |---|---|
-| `message` | `nick`, `text`, `self`, `hilight`, `notice`, `action`, `id` (for `isekur.embed`). Return `true` to hide the line. Your own lines only arrive when the server has echo-message |
+| `message` | `nick`, `text`, `self`, `hilight`, `notice`, `action`, `id` (for `isekur.embed`), `opened` (a private message that opens a new query tab). Return `true` to hide the line (and close the tab it opened). Your own lines only arrive when the server has echo-message |
 | `join` | `nick`, `host`, `self` |
 | `part` | `nick`, `reason`, `self`, `kick`, `by` (who kicked) |
 | `quit` | `nick`, `host`, `reason` (no target: it's the whole network) |
 | `nick` | `nick` (the old one), `new`, `self` (no target) |
 | `away` | `away`: the server says you're away (306) or back (305) |
 | `command` | `name`, `args`: you typed a /command (not one a plugin runs). Return `true` to take it over |
+| `raw` | `cmd` (a numeric: `"303"`, `"433"`...), `args`: its parameters as on the wire, the last one always after a `:` (`"yournick :a b"`). Return `true` to hide it, and what iSekur does with it: only for replies to what your plugin sent |
+| `paste` | `text`: lines pasted into a channel or a query (plain chat, no /commands), joined with `\n`. Return `true` to take them: nothing is sent. With a `paste` handler on in a tab, iSekur doesn't ask "Send N lines?" there |
 | `tick` | every second, no fields: check `isekur.opt("enabled", srv)` for the networks you act on |
 | `connect` | iSekur is about to connect to the network (no target): the moment for `isekur.proxy` |
 | `attach`, `detach` | a terminal or a browser came back / nobody is attached any more |
@@ -92,7 +94,7 @@ query nick) are set when the event has them.
 | `isekur.send(srv, line)` | a raw IRC line (one line) |
 | `isekur.print(srv, target, text, note)` | shows text in that tab only (else the network's tab, else the main window); `note` true puts the INFO badge first |
 | `isekur.exec(srv, target, "/cmd ...")` | runs a command as if typed in that tab (not `/plugin`) |
-| `isekur.http(url, fn)` | fetches an `https://` or `http://` URL in the background (redirects followed, the first 512 KB of the body, a 15s timeout); `fn(r)` gets `r.status` (0 when it failed), `r.type` (the content type, lowercase, no `; charset`), `r.body`, `r.url` (after redirects) and `r.error`. Hosts on loopback, private or link-local addresses are refused. At most 4 at once per plugin: it returns `false, why` past that, or for a URL that isn't http(s) |
+| `isekur.http(url, fn, body)` | fetches an `https://` or `http://` URL in the background (with `body`, a POST of it as `text/plain`) (redirects followed, the first 512 KB of the body, a 15s timeout); `fn(r)` gets `r.status` (0 when it failed), `r.type` (the content type, lowercase, no `; charset`), `r.body`, `r.url` (after redirects) and `r.error`. Hosts on loopback, private or link-local addresses are refused. At most 4 at once per plugin: it returns `false, why` past that, or for a URL that isn't http(s) |
 | `isekur.embed(srv, target, id, t)` | shows `t` under the message with that `id` (its `message` event's `e.id`) in the webchat. `t.type` is `"link"` (with `url`, `title`, and `desc`, `site`, `image` if you have them), `"image"`, `"audio"` or `"video"` (with `url`). The terminal shows `"link"` ones too, as text (site, title, description), unless `term` is `false`. Only http(s) URLs are shown, and everything as plain text. `false` when the line is gone |
 | `isekur.proxy(srv, url)` | in a `connect` handler: this connection goes through `url`, `socks5://`, `socks4://`, `http://` (`[user:pass@]host[:port]`) or `ssh://[user@]host[:port]` (ssh -W, keys or an agent). `nil` or `""`: direct. A bad URL is an error |
 | `isekur.store_get(key)`, `isekur.store_set(key, value)` | the plugin's own saved strings (`<name>.data`); `nil` removes a key. Written within 5 seconds, and when it's unloaded or iSekur exits |
@@ -103,10 +105,11 @@ query nick) are set when the event has them.
 | `isekur.servers()` | names of the connected networks |
 | `isekur.channels(srv)` | the channels joined there |
 | `isekur.me(srv)` | your nick there, nil when not connected |
+| `isekur.nick(srv)` | the nick the config asks for there (the one you'd have if it were free) |
 | `isekur.rank(srv, chan, nick)` | the nick's prefix there (`"@"`, `"+"`, `""`), nil if it's not in the channel |
 | `isekur.away(srv)`, `isekur.attached()` | booleans |
 | `isekur.idle()`, `isekur.detached_for()`, `isekur.time()` | seconds since you typed, seconds nobody's been attached (0 while attached), the Unix time |
-| `isekur.name`, `isekur.api` | the plugin's name, the API version (2: `http`, `embed` and `e.id` came with it; 3: `proxy` and the `connect` event) |
+| `isekur.name`, `isekur.api` | the plugin's name, the API version (2: `http`, `embed` and `e.id` came with it; 3: `proxy` and the `connect` event; 4: the `raw` and `paste` events, `e.opened`, `isekur.nick` and `http`'s `body`) |
 
 ## The catalog
 
