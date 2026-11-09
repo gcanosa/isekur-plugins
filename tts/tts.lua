@@ -1,4 +1,4 @@
--- version: 1.0
+-- version: 1.1
 -- author: Gerardo Canosa
 -- contact: gera.canosa@gmail.com
 -- tts: reads messages aloud: with this machine's speech engine (terminal), the browser's voice (webchat), or both.
