@@ -118,7 +118,7 @@ query nick) are set when the event has them.
 | `isekur.platform()` | the system's name in lowercase: `darwin`, `linux`, `freebsd`, `openbsd`, `netbsd`, `dragonfly` |
 | `isekur.which(name)` | the program's full path on PATH, `nil` when it isn't there. A name with a `/` is `nil` |
 | `isekur.run(argv, text)` | starts a speech engine: `argv[1]` must be `say`, `spd-say`, `espeak-ng`, `espeak`, `flite` or `festival`, no other program and never a shell. `text` goes to its stdin, its output is dropped. `true` if started; `false` while the last one still runs (one at a time per plugin: queue and try again on `tick`). An error for any other program |
-| `isekur.speak_web(text)` | the webchat says `text` aloud in its browser (speechSynthesis): nothing in the terminal. Nothing happens with no webchat open |
+| `isekur.speak_web(text, lang)` | the webchat says `text` aloud in its browser (speechSynthesis): nothing in the terminal. `lang` (optional, a code such as `es`) makes the browser pick a voice for it. Nothing happens with no webchat open |
 | `isekur.sort_tabs()` | puts the tabs in order: each network's tabs together in the network's place, its status tab first, then the channels and queries by name (A to Z, case ignored). The console and shell tabs stay where they are. `true` if the order changed. Call it on `tick` to keep the order: a `/move` is undone at the next tick |
 | `isekur.name`, `isekur.api` | the plugin's name, the API version (2: `http`, `embed` and `e.id` came with it; 3: `proxy` and the `connect` event; 4: the `raw` and `paste` events, `e.opened`, `isekur.nick` and `http`'s `body`; 5: `screen`, `put`, `inactive` and `lock`; 6: `sort_tabs`; 7: `platform`, `which`, `run` and `speak_web`) |
 

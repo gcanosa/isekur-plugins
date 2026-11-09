@@ -37,5 +37,5 @@
    "sha256": "911016614928f14028b390d20c14c93be933da87b5d9c2a3c996ad5837303e51"},
   {"name": "tts", "version": "1.0", "api": 7, "author": "Gerardo Canosa", "contact": "gera.canosa@gmail.com", "official": true,
    "description": "Reads messages aloud: with this machine's speech engine (say on macOS; speech-dispatcher, espeak-ng, flite or festival on Linux and BSD), in the webchat's browser voice, or both; /tts engines shows which engines this system has",
-   "sha256": "c843af3d80af80168d365fcc7b06f2d1bc9f0433324ef536dcb568068cc5baa7"}
+   "sha256": "0c419de3094b6b95764be4e8c43d7a261b4f9ff2b5c3ed018416a861ee2ec2b7"}
 ]
