@@ -1,9 +1,10 @@
--- version: 1.3
+-- version: 1.4
 -- author: Gerardo Canosa
 -- contact: gera.canosa@gmail.com
--- autoaway: away when nobody is attached for 30s (--daemon with no browser open) or after
--- `idle` minutes without typing; back when you return. A manual /away is left alone.
-isekur.setting("idle", 0, "n", "minutes without typing; 0: only when nothing is attached (after 30s)")
+-- autoaway: away when nobody is attached (no terminal, webchat or BNC client) or after `idle`
+-- minutes without typing, whichever comes first; back when you return. A manual /away is left alone.
+-- With idle = 0 the nobody-attached rule is 30s (--daemon with no browser open).
+isekur.setting("idle", 0, "n", "minutes without typing, or with nothing attached; 0: nothing attached for 30s")
 isekur.setting("message", "Not here right now", "n", "the away message others see")
 isekur.setting("announce_away", false, "c", "say \"/me is away: <message>\" in your channels (many dislike it)")
 isekur.setting("announce_back", false, "c", "say \"/me is back\" in your channels when you return")
@@ -17,12 +18,14 @@ local function announce(srv, key, text)
 end
 
 isekur.on("tick", function()
-  local detached = not isekur.attached() and isekur.detached_for() >= 30
+  local nobody = not isekur.attached()
+  local gone = isekur.detached_for()  -- seconds since the last console or webchat left (0 while one is attached)
   local live = {}
   for _, srv in ipairs(isekur.servers()) do
     live[srv] = true
     local idle = isekur.opt("idle", srv)
-    local want = isekur.opt("enabled", srv) and (detached or (idle > 0 and isekur.idle() >= idle * 60))
+    local limit = idle > 0 and idle * 60 or 30  -- the same minutes for both rules; 30s when idle is 0
+    local want = isekur.opt("enabled", srv) and ((nobody and gone >= limit) or (idle > 0 and isekur.idle() >= idle * 60))
     if want and not isekur.away(srv) and not mine[srv] then
       mine[srv] = true
       local msg = isekur.opt("message", srv)
