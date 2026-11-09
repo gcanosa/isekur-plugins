@@ -31,5 +31,11 @@
    "sha256": "7b52b13626bf7bf9d9e63335be32ac761678e0cca7fd278ab5afb80ca7078d7f"},
   {"name": "screensaver", "version": "1.1", "api": 5, "author": "Gerardo Canosa", "contact": "gera.canosa@gmail.com", "official": true,
    "description": "A screensaver for the terminal and the webchat after some idle minutes: digital rain, floating particles or a quiet sky of drifting stars; with lock on, waking asks for the lock password",
-   "sha256": "6f6e8316639571c340306c1260640916d45ba85f2f6e5544b19b2cc9a4ad9c01"}
+   "sha256": "6f6e8316639571c340306c1260640916d45ba85f2f6e5544b19b2cc9a4ad9c01"},
+  {"name": "autosort", "version": "1.0", "api": 6, "author": "Gerardo Canosa", "contact": "gera.canosa@gmail.com", "official": true,
+   "description": "Keeps the tabs grouped by network, each network's status tab first, then its channels and queries by name",
+   "sha256": "911016614928f14028b390d20c14c93be933da87b5d9c2a3c996ad5837303e51"},
+  {"name": "tts", "version": "1.0", "api": 7, "author": "Gerardo Canosa", "contact": "gera.canosa@gmail.com", "official": true,
+   "description": "Reads messages aloud: with this machine's speech engine (say on macOS; speech-dispatcher, espeak-ng, flite or festival on Linux and BSD), in the webchat's browser voice, or both; /tts engines shows which engines this system has",
+   "sha256": "c843af3d80af80168d365fcc7b06f2d1bc9f0433324ef536dcb568068cc5baa7"}
 ]
