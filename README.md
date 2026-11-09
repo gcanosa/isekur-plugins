@@ -5,21 +5,21 @@ built-in webchat. Nothing here is installed by default: in iSekur, `/plugin` ope
 window (or the puzzle button in the webchat), and `/plugin install name` fetches one from here,
 checks its sha256 against `index.json`, and turns it on.
 
-| Plugin | What it does |
-|---|---|
-| **autoaway** | Away when you're idle or nothing is attached, back when you return; on or off per network, away and back announced if you like. |
-| **awaylog** | Your highlights and private messages while you were away or detached, summed up in each network's console when you come back, with a pointer in the tab you're on. |
-| **keepnick** | Takes your nick back once it's free: when you see its holder leave, and by asking the server every 30 seconds (`every`). A `/nick` you type yourself stops it on that network until you reconnect. |
-| **pasteguard** | A paste of 3 lines or more (`lines`) into a channel or a query goes to a pastebin (paste.rs by default, `service`) and only its link is said. If the upload fails nothing is sent: `/pasteguard send` or `/pasteguard retry`. |
-| **autosort** | Keeps the tabs grouped by network, each network's status tab first, then its channels and queries by name. A tab you `/move` goes back into place within a second: `/plugin disable autosort` keeps your order. |
-| **tts** | Reads messages aloud: with this machine's speech engine (`say` on macOS; `spd-say`, `espeak-ng`, `flite` or `festival` on Linux and BSD), in the webchat's browser voice, or both (`where`). `language` (everywhere, or per network or channel) picks the language. Only the networks and channels you enable. `/tts engines` shows which engines this system has; `/tts test` says a line. |
-| **screensaver** | After `idle` minutes (10) without a key, click or mouse move, the terminal and the webchat show digital rain, floating particles or a quiet sky of drifting stars (`saver`: `matrix`, `particles`, `stars` or `random`) until you touch something. With `lock` on, waking asks for the lock password (the one `/lock` sets). Never while nobody is at a terminal or the webchat. `/screensaver [name]` starts one now. |
-| **pmguard** | Private messages from people you haven't let through are held, not opened: you're told once, `/pmguard allow nick` opens the query with what they said. People you `/msg` yourself, services and notices go through; `channels on` lets in people who share a channel with you. |
-| **preview** | Under links people post, in the webchat: a card with the page's title, description and picture, the picture itself for image links, and a player for audio and video links (mp3, ogg, m4a, mp4, webm...). In the terminal, the title and description as text. |
-| **push** | Your highlights and private messages pushed to your phone, tablet or browser while you're away or nothing is attached: ntfy (no account: the ntfy app or ntfy.sh in a browser, `/plugin set push topic <name>`) or a Telegram bot. `/push test` checks it. |
-| **proxy** | Connects the networks you pick through a SOCKS4/SOCKS5 or HTTP proxy, or an SSH jump host (`ssh -W`); the others stay direct. |
-| **remind** | `/remind 10m check the build`, `/remind 1h30m ...`, `/remind 18:30 call home`: shown in that tab and the one you're on; saved, so one due while iSekur was off shows when it starts. `/remind` lists them, `/remind del 2`. |
-| **seen** | `/seen nick`: when and where someone was last seen talking, joining, leaving, quitting or renaming; answers `!seen` where you turn it on. |
+| Plugin | Version | API | What it does |
+|---|---|---|---|
+| **autoaway** | 1.4 | 1 | Away when you're idle or nothing is attached, back when you return; on or off per network, away and back announced if you like. |
+| **awaylog** | 1.4 | 1 | Your highlights and private messages while you were away or detached, summed up in each network's console when you come back, with a pointer in the tab you're on. |
+| **keepnick** | 1.0 | 4 | Takes your nick back once it's free: when you see its holder leave, and by asking the server every 30 seconds (`every`). A `/nick` you type yourself stops it on that network until you reconnect. |
+| **pasteguard** | 1.0 | 4 | A paste of 3 lines or more (`lines`) into a channel or a query goes to a pastebin (paste.rs by default, `service`) and only its link is said. If the upload fails nothing is sent: `/pasteguard send` or `/pasteguard retry`. |
+| **autosort** | 1.0 | 6 | Keeps the tabs grouped by network, each network's status tab first, then its channels and queries by name. A tab you `/move` goes back into place within a second: `/plugin disable autosort` keeps your order. |
+| **tts** | 1.1 | 7 | Reads messages aloud: with this machine's speech engine (`say` on macOS; `spd-say`, `espeak-ng`, `flite` or `festival` on Linux and BSD), in the webchat's browser voice, or both (`where`). `language` (everywhere, or per network or channel) picks the language. Only the networks and channels you enable. `/tts engines` shows which engines this system has; `/tts test` says a line. |
+| **screensaver** | 1.1 | 5 | After `idle` minutes (10) without a key, click or mouse move, the terminal and the webchat show digital rain, floating particles or a quiet sky of drifting stars (`saver`: `matrix`, `particles`, `stars` or `random`) until you touch something. With `lock` on, waking asks for the lock password (the one `/lock` sets). Never while nobody is at a terminal or the webchat. `/screensaver [name]` starts one now. |
+| **pmguard** | 1.0 | 4 | Private messages from people you haven't let through are held, not opened: you're told once, `/pmguard allow nick` opens the query with what they said. People you `/msg` yourself, services and notices go through; `channels on` lets in people who share a channel with you. |
+| **preview** | 1.4 | 2 | Under links people post, in the webchat: a card with the page's title, description and picture, the picture itself for image links, and a player for audio and video links (mp3, ogg, m4a, mp4, webm...). In the terminal, the title and description as text. |
+| **push** | 1.0 | 2 | Your highlights and private messages pushed to your phone, tablet or browser while you're away or nothing is attached: ntfy (no account: the ntfy app or ntfy.sh in a browser, `/plugin set push topic <name>`) or a Telegram bot. `/push test` checks it. |
+| **proxy** | 1.0 | 3 | Connects the networks you pick through a SOCKS4/SOCKS5 or HTTP proxy, or an SSH jump host (`ssh -W`); the others stay direct. |
+| **remind** | 1.0 | 1 | `/remind 10m check the build`, `/remind 1h30m ...`, `/remind 18:30 call home`: shown in that tab and the one you're on; saved, so one due while iSekur was off shows when it starts. `/remind` lists them, `/remind del 2`. |
+| **seen** | 1.3 | 1 | `/seen nick`: when and where someone was last seen talking, joining, leaving, quitting or renaming; answers `!seen` where you turn it on. |
 
 ```
 /plugin available
