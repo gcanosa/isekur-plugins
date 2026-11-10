@@ -1,4 +1,4 @@
--- version: 1.1
+-- version: 1.2
 -- author: Gerardo Canosa
 -- contact: gera.canosa@gmail.com
 -- tts: reads messages aloud: with this machine's speech engine (terminal), the browser's voice (webchat), or both.
@@ -52,6 +52,7 @@ local function argv_for(e, text, voice, lang)
   end
   if e.voice and voice ~= "" then a[#a + 1] = e.voice; a[#a + 1] = voice end
   if e.name == "spd-say" and code ~= "" then a[#a + 1] = "-l"; a[#a + 1] = code end
+  if e.name == "festival" then a[#a + 1] = "--tts" end  -- without it festival reads its stdin as Scheme, which can run programs
   if e.text == "stdin" then return a, text end
   if e.name == "spd-say" then a[#a + 1] = "--" end
   if e.name == "flite" then a[#a + 1] = "-t" end
