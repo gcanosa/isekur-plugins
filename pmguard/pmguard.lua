@@ -1,11 +1,13 @@
--- version: 1.0
+-- version: 1.1
 -- author: Gerardo Canosa
 -- contact: gera.canosa@gmail.com
 -- pmguard: private messages from people you haven't let through are held, not opened in a tab: spam and bots stay
 -- out. You're told once per nick in the network's tab; /pmguard allow nick opens the query with what they said.
 -- People you /msg or /query yourself are let through, and so are services (NickServ...) and notices.
+-- The nicklist's right click (and a query tab's) gets "Allow PMs" or "Remove from PM list" where it's on.
 isekur.setting("channels", false, "n", "let through people who share a channel with you")
-isekur.setting("reply", "", "n", "a notice sent once to whoever's held (empty: none; an answer tells a spammer you're there)")
+isekur.setting("reply", "I don't take private messages from people I haven't added yet. Say hi in a channel first.", "n",
+               "a notice sent once to whoever's held (empty: none; an answer tells a spammer you're there)")
 
 local held = {}   -- "<network>\t<nick lowercased>" -> {nick =, lines = {...}}
 local told = {}   -- the same keys: told about, and replied to, this session
@@ -57,6 +59,13 @@ isekur.on("command", function(e)
   if to and to:sub(1, 1) ~= "-" and not isekur.is_chan(e.srv, to) and not to:find(",") then allow(e.srv, to) end
 end)
 isekur.on("nick", function(e) if allowed(e.srv, e.nick) then allow(e.srv, e.new) end end)
+
+isekur.on("nickmenu", function(e)
+  local nick = e.nick
+  if nick == isekur.me(e.srv) or nick:find("[%.%*]") or nick:lower():match("serv$") then return end
+  if allowed(e.srv, nick) then return {{"Remove from PM list", "/pmguard deny " .. nick}} end
+  return {{"Allow PMs", "/pmguard allow " .. nick}}
+end)
 
 isekur.command("pmguard", "[allow|deny|show|drop nick | allowed]", function(args, srv, tab)
   if not srv then return "Use /pmguard in a network's tab" end
