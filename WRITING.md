@@ -83,6 +83,7 @@ query nick) are set when the event has them.
 | `command` | `name`, `args`: you typed a /command (not one a plugin runs). Return `true` to take it over |
 | `raw` | `cmd` (a numeric: `"303"`, `"433"`...), `args`: its parameters as on the wire, the last one always after a `:` (`"yournick :a b"`). Return `true` to hide it, and what iSekur does with it: only for replies to what your plugin sent |
 | `paste` | `text`: lines pasted into a channel or a query (plain chat, no /commands), joined with `\n`. Return `true` to take them: nothing is sent. With a `paste` handler on in a tab, iSekur doesn't ask "Send N lines?" there |
+| `show` | `nick`, `text`, `self`, `action`, `notice`: a message about to be shown in a tab (yours too, and history). Return a string to show that instead, in the terminal and the webchat only: the network got the original and the log keeps it |
 | `tick` | every second, no fields: check `isekur.opt("enabled", srv)` for the networks you act on |
 | `connect` | iSekur is about to connect to the network (no target): the moment for `isekur.proxy` |
 | `attach`, `detach` | a terminal or a browser came back / nobody is attached any more |
@@ -120,7 +121,8 @@ query nick) are set when the event has them.
 | `isekur.run(argv, text)` | starts a speech engine: `argv[1]` must be `say`, `spd-say`, `espeak-ng`, `espeak`, `flite` or `festival` (only as `{"festival", "--tts"}`: without it festival reads its stdin as Scheme), no other program and never a shell. `text` goes to its stdin, its output is dropped. `true` if started; `false` while the last one still runs (one at a time per plugin: queue and try again on `tick`). An error for any other program |
 | `isekur.speak_web(text, lang)` | the webchat says `text` aloud in its browser (speechSynthesis): nothing in the terminal. `lang` (optional, a code such as `es`) makes the browser pick a voice for it. Nothing happens with no webchat open |
 | `isekur.sort_tabs()` | puts the tabs in order: each network's tabs together in the network's place, its status tab first, then the channels and queries by name (A to Z, case ignored). The console and shell tabs stay where they are. `true` if the order changed. Call it on `tick` to keep the order: a `/move` is undone at the next tick |
-| `isekur.name`, `isekur.api` | the plugin's name, the API version (2: `http`, `embed` and `e.id` came with it; 3: `proxy` and the `connect` event; 4: the `raw` and `paste` events, `e.opened`, `isekur.nick` and `http`'s `body`; 5: `screen`, `put`, `inactive` and `lock`; 6: `sort_tabs`; 7: `platform`, `which`, `run` and `speak_web`) |
+| `isekur.theme()` | the loaded theme's colors, `0xRRGGBB`: `name`, `fg` and `bg` (its text and background; nil where the terminal's own is used), `hilight`, `timestamp`, and `nicks` (its nick colors, a list) |
+| `isekur.name`, `isekur.api` | the plugin's name, the API version (2: `http`, `embed` and `e.id` came with it; 3: `proxy` and the `connect` event; 4: the `raw` and `paste` events, `e.opened`, `isekur.nick` and `http`'s `body`; 5: `screen`, `put`, `inactive` and `lock`; 6: `sort_tabs`; 7: `platform`, `which`, `run` and `speak_web`; 8: the `show` event and `theme`) |
 
 ## The catalog
 
