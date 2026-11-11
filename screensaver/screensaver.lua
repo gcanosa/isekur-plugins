@@ -1,12 +1,14 @@
--- version: 1.1
+-- version: 1.2
 -- author: Gerardo Canosa
 -- contact: gera.canosa@gmail.com
 -- screensaver: after `idle` minutes without a key, click or mouse move, the terminal and the webchat
 -- show digital rain, floating particles or a quiet sky of drifting stars until you touch something;
--- with lock on, waking asks for the lock password. /screensaver [matrix|particles|stars] starts one now.
+-- with lock on, waking asks for the lock password. Locking iSekur (Alt+S, /lock) starts one too, under
+-- the password box (on_lock off: it doesn't). /screensaver [matrix|particles|stars] starts one now.
 isekur.setting("idle", 10, "g", "minutes without a key, click or mouse move (terminal or webchat); 0: only /screensaver")
 isekur.setting("saver", "random", "g", "which one; random: another each time", {"random", "matrix", "particles", "stars"})
 isekur.setting("lock", false, "g", "waking asks for the lock password (the one /lock sets)")
+isekur.setting("on_lock", true, "g", "locking iSekur (Alt+S, /lock, lock_idle) starts one behind the password box")
 
 local function rgb(r, g, b) return math.floor(r) * 65536 + math.floor(g) * 256 + math.floor(b) end
 local function scale(c, k)  -- a 0xRRGGBB color at k (0..1) of its brightness
@@ -149,4 +151,8 @@ isekur.on("tick", function()
   if isekur.screen() then return end
   local idle = isekur.opt("idle")
   if idle > 0 and isekur.inactive() >= idle * 60 then start(isekur.opt("saver")) end
+end)
+
+isekur.on("lock", function()  -- iSekur 11+: locked (Alt+S, /lock, lock_idle), the screensaver goes on behind the password box
+  if isekur.opt("on_lock") and not isekur.screen() then start(isekur.opt("saver")) end
 end)

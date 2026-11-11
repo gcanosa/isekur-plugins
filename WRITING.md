@@ -90,6 +90,7 @@ query nick) are set when the event has them.
 | `nickmenu` | `nick`: you right-clicked a nick in the nicklist, or a query tab. Return `{{"Label", "/command ..."}, ...}` (up to 8) to add them to its menu, after a separator. Commands only, one line each, and not ones `isekur.exec` refuses or `/plugin`. A command ending in a space goes to the input line instead |
 | `tick` | every second, no fields: check `isekur.opt("enabled", srv)` for the networks you act on |
 | `connect` | iSekur is about to connect to the network (no target): the moment for `isekur.proxy` |
+| `lock` | iSekur was just locked (Alt+S, `/lock`, `lock_idle`, a plugin's `isekur.lock()`), no fields. API 11 |
 | `attach`, `detach` | a terminal or a browser came back / nobody is attached any more |
 
 ## Calls
@@ -126,7 +127,7 @@ query nick) are set when the event has them.
 | `isekur.speak_web(text, lang)` | the webchat says `text` aloud in its browser (speechSynthesis): nothing in the terminal. `lang` (optional, a code such as `es`) makes the browser pick a voice for it. Nothing happens with no webchat open |
 | `isekur.sort_tabs()` | puts the tabs in order: each network's tabs together in the network's place, its status tab first, then the channels and queries by name (A to Z, case ignored). The console and shell tabs stay where they are. `true` if the order changed. Call it on `tick` to keep the order. A tab the user `/move`d (or dragged) keeps its place in its network's group until iSekur restarts; the others sort around it |
 | `isekur.theme()` | the loaded theme's colors, `0xRRGGBB`: `name`, `fg` and `bg` (its text and background; nil where the terminal's own is used), `hilight`, `timestamp`, and `nicks` (its nick colors, a list) |
-| `isekur.name`, `isekur.api` | the plugin's name, the API version (2: `http`, `embed` and `e.id` came with it; 3: `proxy` and the `connect` event; 4: the `raw` and `paste` events, `e.opened`, `isekur.nick` and `http`'s `body`; 5: `screen`, `put`, `inactive` and `lock`; 6: `sort_tabs`; 7: `platform`, `which`, `run` and `speak_web`; 8: the `show` event and `theme`; 9: the `nickmenu` event; 10: `set`) |
+| `isekur.name`, `isekur.api` | the plugin's name, the API version (2: `http`, `embed` and `e.id` came with it; 3: `proxy` and the `connect` event; 4: the `raw` and `paste` events, `e.opened`, `isekur.nick` and `http`'s `body`; 5: `screen`, `put`, `inactive` and `lock`; 6: `sort_tabs`; 7: `platform`, `which`, `run` and `speak_web`; 8: the `show` event and `theme`; 9: the `nickmenu` event; 10: `set`; 11: the `lock` event) |
 
 ## The catalog
 
