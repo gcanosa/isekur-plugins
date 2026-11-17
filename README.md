@@ -21,6 +21,7 @@ checks its sha256 against `index.json`, and turns it on.
 | **proxy** | 1.0 | 3 | Connects the networks you pick through a SOCKS4/SOCKS5 or HTTP proxy, or an SSH jump host (`ssh -W`); the others stay direct. |
 | **remind** | 1.0 | 1 | `/remind 10m check the build`, `/remind 1h30m ...`, `/remind 18:30 call home`: shown in that tab and the one you're on; saved, so one due while iSekur was off shows when it starts. `/remind` lists them, `/remind del 2`. |
 | **seen** | 1.3 | 1 | `/seen nick`: when and where someone was last seen talking, joining, leaving, quitting or renaming; answers `!seen` where you turn it on. |
+| **zen** | 1.0 | 11 | `/zen` hides the tabs, the nicklist, the topic and the status bar and leaves only the chat, in a column in the middle (`width`), the last `lines` (5) bright and the ones before them dimmed, so you keep the thread without the noise. It draws in `mono` (or `mono-light`, or `keep` your theme); nothing is saved, so `/zen` again, Esc on an empty line, or disabling the plugin brings back your theme and layout. `where`: `both`, `terminal` or `web`; joins and parts hidden unless `events` is on. |
 
 ```
 /plugin available
