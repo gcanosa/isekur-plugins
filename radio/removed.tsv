@@ -1,0 +1,1 @@
+# Stations radio/check.py took out of stations.tsv after 3 failed checks in a row. It tests these too and puts one back when it works again.

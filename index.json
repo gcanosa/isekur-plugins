@@ -148,5 +148,15 @@
   "official": true,
   "description": "/zen: only the chat, in a column in the middle, the last lines bright and the ones before them dimmed, in the mono theme; the tabs, nicklist, topic and status bar hide. In the terminal, the webchat or both. /zen again or Esc brings everything back",
   "sha256": "9d6f1e081bfab77bc3880a1e268adb8f6697411adb715a123c5d98b1670119ac"
+ },
+ {
+  "name": "radio",
+  "version": "1.0",
+  "api": 12,
+  "author": "Gerardo Canosa",
+  "contact": "gera.canosa@gmail.com",
+  "official": true,
+  "description": "/radio: 24/7 radio, audio only. YouTube's live channels (Claude FM, State FM, Pink Floyd style, 80s and synthwave radios) and plain internet radio (SomaFM, Radio Paradise); a window with a cassette, a filter, a favorite star and mute. The webchat plays it, on a phone too with the screen locked; the terminal plays it in the background. Needs ffmpeg (and yt-dlp for YouTube) on the machine iSekur runs on",
+  "sha256": "dd163f6b70d8efcc2b4e91c5c3e067c210791c6b93ee280b30d4228012991ef4"
  }
 ]

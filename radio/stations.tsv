@@ -1,0 +1,123 @@
+# The radio plugin's station list: what every iSekur fetches (every `refresh` hours, 24 by default).
+# One station per line: name <TAB> address. An address is a YouTube channel's live (https://www.youtube.com/@name/live: always
+# its current stream) or a plain http(s) radio stream. Lines starting with # are comments.
+# radio/check.py tests every station and moves the dead ones to removed.tsv (and back when they work again): don't edit by hand
+# what it just wrote, send a line to add a station. See radio/README.md.
+Claude FM	https://www.youtube.com/@claude/live
+State FM: ambient electronica (State Azure)	https://www.youtube.com/@stateazure/live
+Pink Floyd style: Inner World	https://www.youtube.com/@PeterChers_Josephine/live
+Pink Floyd style: Solace Sounds	https://www.youtube.com/@SolaceSoundsStudioLab/live
+Pink Floyd style: Echoes of Silence	https://www.youtube.com/@TheLostRockChronicles/live
+Floyd Runner Radio	https://www.youtube.com/@LUX-AmbientMusic/live
+SomaFM Underground 80s: synthpop and new wave	https://ice4.somafm.com/u80s-128-aac
+80s Midnight FM	https://www.youtube.com/@80sMidnightFM/live
+70s 80s Hits Radio	https://www.youtube.com/@bestofnostalgia/live
+Radio 70s 80s Mix	https://www.youtube.com/@liveradiomix/live
+RetroPulse FM: 80s synthwave	https://www.youtube.com/@RetroPulseFM/live
+New Retro FM: synthwave	https://www.youtube.com/@NewRetroNet/live
+Devs FM: Terminal 1987	https://www.youtube.com/@devsfm/live
+SomaFM Groove Salad	https://ice4.somafm.com/groovesalad-128-aac
+SomaFM Space Station	https://ice4.somafm.com/spacestation-128-aac
+SomaFM DEF CON Radio	https://ice4.somafm.com/defcon-128-aac
+Radio Paradise	https://stream.radioparadise.com/mp3-192
+Radio Paradise: rock mix	https://stream.radioparadise.com/rock-192
+Lofi Girl: lofi hip hop beats to study to	https://www.youtube.com/@LofiGirl/live
+Chillhop Music: jazzy and lofi hip hop	https://www.youtube.com/@ChillhopMusic/live
+Coffee Shop Radio: chill lofi and jazzy beats	https://www.youtube.com/@steezyasfvck/live
+I Love Chillhop: chillhop and lofi	https://ilm.stream12.radiohost.de/ilm_ilovechillhop_mp3-192
+REYFM Lofi	https://listen.reyfm.de/lofi_320kbps.mp3
+SomaFM Groove Salad Classic: ambient downtempo	https://ice4.somafm.com/gsclassic-128-aac
+SomaFM Fluid: instrumental hip hop and future soul	https://ice4.somafm.com/fluid-128-aac
+SomaFM Lush: mellow female vocals, electronic	https://ice4.somafm.com/lush-128-aac
+Vibin: boom bap hip hop instrumentals	https://www.youtube.com/@Vibin/live
+SomaFM Drone Zone: atmospheric ambient	https://ice4.somafm.com/dronezone-128-aac
+SomaFM Deep Space One: deep ambient and space music	https://ice4.somafm.com/deepspaceone-128-aac
+SomaFM The Dark Zone: dark ambient	https://ice4.somafm.com/darkzone-128-aac
+Hyperfocus: ambient for deep work	https://www.youtube.com/@Hyperfocus_Night_Office/live
+Velvet Cat Lounge: vintage noir jazz	https://www.youtube.com/@VelvetCatLounge/live
+Radio Swiss Jazz	https://stream.srg-ssr.ch/m/rsj/mp3_128
+FIP Jazz	https://icecast.radiofrance.fr/fipjazz-hifi.aac
+Classic Vinyl HD: jazz and classic vinyl	https://icecast.walmradio.com:8443/classic
+SmoothJazz.com: smooth jazz	https://smoothjazz.cdnstream1.com/2585_128.mp3
+0N Radio Smooth Jazz	https://0n-smoothjazz.radionetz.de/0n-smoothjazz.aac
+SomaFM Sonic Universe: eclectic jazz	https://ice4.somafm.com/sonicuniverse-128-aac
+SomaFM Illinois Street Lounge: vintage lounge and exotica	https://ice4.somafm.com/illstreet-128-aac
+SomaFM Secret Agent: spy lounge and soundtracks	https://ice4.somafm.com/secretagent-128-aac
+SomaFM Bossa Beyond: bossa nova and samba	https://ice4.somafm.com/bossa-128-aac
+SomaFM Tiki Time: tiki and vintage island music	https://ice4.somafm.com/tikitime-128-aac
+Radio Swiss Classic	https://stream.srg-ssr.ch/m/rsc_de/mp3_128
+France Musique: classical	https://icecast.radiofrance.fr/francemusique-hifi.aac
+France Musique Opéra	https://icecast.radiofrance.fr/francemusiqueopera-hifi.aac
+Odd Eagle: classical piano	https://www.youtube.com/@OddEagleProductions/live
+Exclusive Radio: Pink Floyd	https://streaming.exclusive.radio/er/pinkfloyd/icecast.audio
+Exclusive Radio: Pink Floyd hits	https://streaming.exclusive.radio/er-app/pinkfloydhits/icecast.audio
+Exclusive Radio: Led Zeppelin hits	https://streaming.exclusive.radio/er-app/ledzeppelinhits/icecast.audio
+Genesis (Exclusive Radio)	https://2.mystreaming.net/er/genesis/icecast.audio
+Exclusive Radio: Dire Straits	https://streaming.exclusive.radio/er/direstraits/icecast.audio
+Exclusive Radio: Deep Purple	https://streaming.exclusive.radio/er/deeppurple/icecast.audio
+Exclusive Radio: The Doors	https://streaming.exclusive.radio/er-app/doors/icecast.audio
+Exclusive Radio: Fleetwood Mac	https://streaming.exclusive.radio/er/fleetwoodmac/icecast.audio
+Exclusive Radio: Supertramp	https://streaming.exclusive.radio/er/supertramp/icecast.audio
+Exclusive Radio: ELO	https://streaming.exclusive.radio/er/elo/icecast.audio
+Exclusive Radio: The Police hits	https://streaming.exclusive.radio/er/policehits/icecast.audio
+Exclusive Radio: Queen	https://streaming.exclusive.radio/er/queen/icecast.audio
+Exclusive Radio: David Bowie	https://streaming.exclusive.radio/er/davidbowie/icecast.audio
+Exclusive Radio: Nirvana	https://streaming.exclusive.radio/er/nirvana/icecast.audio
+Rock FM: classic rock hits	https://www.youtube.com/@rockfm1/live
+The Prog Rock Machine: progressive rock	https://theproganrockmachine.out.airtime.pro/theproganrockmachine_b
+SomaFM Left Coast 70s: mellow album rock	https://ice4.somafm.com/seventies-128-aac
+FIP Rock	https://icecast.radiofrance.fr/fiprock-hifi.aac
+SomaFM Indie Pop Rocks!: indie pop	https://ice4.somafm.com/indiepop-128-aac
+SomaFM Digitalis: electronic-tinged analog rock	https://ice4.somafm.com/digitalis-128-aac
+SomaFM Covers: songs you know by artists you don't	https://ice4.somafm.com/covers-128-aac
+SomaFM Metal Detector: metal	https://ice4.somafm.com/metal-128-aac
+Exclusive Radio: Iron Maiden	https://streaming.exclusive.radio/er/ironmaiden/icecast.audio
+Exclusive Radio: Black Sabbath	https://streaming.exclusive.radio/er/blacksabbath/icecast.audio
+Exclusive Radio: Metallica	https://streaming.exclusive.radio/er/metallica/icecast.audio
+181.FM 80's Hair Band: hair metal	https://listen.181fm.com/181-hairband_128k.mp3
+Nuclear Blast: metal	https://www.youtube.com/@NuclearBlastRecords/live
+Exclusive Radio: Depeche Mode	https://streaming.exclusive.radio/er/depechemode/icecast.audio
+Exclusive Radio: Pet Shop Boys	https://streaming.exclusive.radio/er/petshopboys/icecast.audio
+0N Radio New Wave	https://0n-newwave.radionetz.de/0n-newwave.mp3
+0N Radio 80s hits	https://0n-80s.radionetz.de/0n-80s.mp3
+0N Radio 90s hits	https://0n-90s.radionetz.de/0n-90s.mp3
+0N Radio 70s hits	https://0n-70s.radionetz.de/0n-70s.mp3
+181.FM Super 70s	https://listen.181fm.com/181-70s_128k.mp3
+0N Radio Disco	https://0n-disco.radionetz.de/0n-disco.mp3
+SomaFM PopTron: electropop and indie dance	https://ice4.somafm.com/poptron-128-aac
+Nightride FM: synthwave	https://stream.nightride.fm/nightride.mp3
+Nightride FM Spacesynth	https://stream.nightride.fm/spacesynth.mp3
+Nightride FM Darksynth	https://stream.nightride.fm/darksynth.mp3
+Nightride FM Chillsynth	https://stream.nightride.fm/chillsynth.mp3
+SomaFM Vaporwaves: vaporwave	https://ice4.somafm.com/vaporwaves-128-aac
+Tokyo Midnight Drive: 80s Japanese city pop	https://www.youtube.com/@neoncitypop2/live
+SomaFM Beat Blender: deep house and downtempo	https://ice4.somafm.com/beatblender-128-aac
+SomaFM cliqhop idm: intelligent dance music	https://ice4.somafm.com/cliqhop-128-aac
+SomaFM The Trip: progressive house and trance	https://ice4.somafm.com/thetrip-128-aac
+SomaFM Dub Step Beyond: dubstep and deep bass	https://ice4.somafm.com/dubstep-128-aac
+FIP Electro	https://icecast.radiofrance.fr/fipelectro-hifi.aac
+Dance Wave!: dance	https://dancewave.online/dance.mp3
+Bassport: deep techno	https://www.youtube.com/@bassportmusic/live
+A State of Trance	https://www.youtube.com/@astateoftrance/live
+Raz Nitzan: uplifting trance	https://www.youtube.com/@RazNitzanMusic/live
+Hospital Records: drum and bass	https://www.youtube.com/@hospitalrecords/live
+The Good Life Radio: chill house	https://www.youtube.com/@TheGoodLiferadio/live
+Monstercat Silk: deep and melodic house	https://www.youtube.com/@monstercatsilk/live
+SomaFM Seven Inch Soul: vintage soul	https://ice4.somafm.com/7soul-128-aac
+FIP Groove: soul, funk, disco	https://icecast.radiofrance.fr/fipgroove-hifi.aac
+SomaFM Heavyweight Reggae: reggae, ska, rocksteady	https://ice4.somafm.com/reggae-128-aac
+FIP Reggae	https://icecast.radiofrance.fr/fipreggae-hifi.aac
+Jah Vibe: reggae chill	https://www.youtube.com/@JahVibeRecords/live
+Noctivelle: Chicago blues	https://www.youtube.com/@NoctivelleBlues/live
+Chicago Blues Radio: slow blues	https://www.youtube.com/@TribalJazzAbdul/live
+181.FM Highway 181: country	https://listen.181fm.com/181-highway_128k.mp3
+SomaFM Boot Liquor: Americana and roots	https://ice4.somafm.com/bootliquor-128-aac
+SomaFM Folk Forward: indie and alt folk	https://ice4.somafm.com/folkfwd-128-aac
+SomaFM ThistleRadio: Celtic and world roots	https://ice4.somafm.com/thistle-128-aac
+SomaFM Suburbs of Goa: Asian world beats	https://ice4.somafm.com/suburbsofgoa-128-aac
+FIP World	https://icecast.radiofrance.fr/fipworld-hifi.aac
+FIP: eclectic music (Radio France)	https://icecast.radiofrance.fr/fip-hifi.aac
+Radio Swiss Pop	https://stream.srg-ssr.ch/m/rsp/mp3_128
+Radio Paradise: mellow mix	https://stream.radioparadise.com/mellow-192
+Radio Paradise: global mix	https://stream.radioparadise.com/global-192
+Radio Paradise: world and etc	https://stream.radioparadise.com/world-192

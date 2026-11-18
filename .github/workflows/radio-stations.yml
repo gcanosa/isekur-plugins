@@ -1,0 +1,22 @@
+name: radio stations
+# Tests every station of the radio plugin once a day and moves the dead ones to radio/removed.tsv (and back when they work
+# again): radio/check.py. It changes nothing when most stations fail at once (a runner YouTube blocks), and the job then fails
+on:
+  schedule:
+    - cron: "23 5 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  stations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg && python3 -m pip install yt-dlp
+      - run: python3 radio/check.py --self-test && python3 radio/check.py
+      - name: commit what changed
+        run: |
+          git config user.name "radio-stations"
+          git config user.email "actions@users.noreply.github.com"
+          git add radio/stations.tsv radio/removed.tsv radio/health.json
+          git diff --cached --quiet || (git commit -m "radio: stations checked" && git push)
