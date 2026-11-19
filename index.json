@@ -140,6 +140,16 @@
   "sha256": "9f81397164a982bec31344362e70c625488c767c6c64e1d41525f42334fa6ce9"
  },
  {
+  "name": "nickcolors",
+  "version": "1.0",
+  "api": 13,
+  "author": "Gerardo Canosa",
+  "contact": "gera.canosa@gmail.com",
+  "official": true,
+  "description": "Nicks in the colors the chat gives them: the nicks said inside a message and/or the user list, each in its own color (and you in yours), on your screens only: nothing is sent in color, the logs stay plain",
+  "sha256": "0b03518ddcdf022fd163a89ec428e2fa37bbf328b3e98fb6ede3231faa5c60bb"
+ },
+ {
   "name": "zen",
   "version": "1.0",
   "api": 11,
