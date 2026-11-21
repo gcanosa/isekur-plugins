@@ -171,12 +171,12 @@
  },
  {
   "name": "eventshidemgr",
-  "version": "1.0",
+  "version": "1.1",
   "api": 14,
   "author": "Gerardo Canosa",
   "contact": "gera.canosa@gmail.com",
   "official": true,
-  "description": "Folds runs of joins, parts, quits and nick changes into one row, \"3 joined, 2 left ▸\", in the terminal and the webchat. A click opens the run and folds it again, and so does leaving the tab. Kicks, your own joins and every message end a run. Optional: the nicks in the row (names), nick changes counted (nicks), and the summary rows kept in a /quiet tab (quiet = fold). On your screens only",
-  "sha256": "f63804d0ff56d36c7fc02ce5a564a471d9f40621884603765825bff5d15c15a2"
+  "description": "Folds runs of joins, parts, quits and nick changes into one row, \"3 joined, 2 left\", in the terminal and the webchat. A click opens the run and folds it again, and so does leaving the tab. Kicks, your own joins and every message end a run. Optional: the nicks in the row (names), nick changes counted (nicks), and the summary rows kept in a /quiet tab (quiet = fold). On your screens only",
+  "sha256": "31c12a6793d67f9b47f280a10f81f9e4abc89204436bf056156fda38312b30f6"
  }
 ]

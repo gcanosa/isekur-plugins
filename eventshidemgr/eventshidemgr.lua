@@ -1,8 +1,8 @@
--- version: 1.0
+-- version: 1.1
 -- author: Gerardo Canosa
 -- contact: gera.canosa@gmail.com
--- eventshidemgr.lua: runs of joins, parts, quits and nick changes folded into one row, "⇄ 3 joined, 2 left ▸".
--- A click opens the run (▾) and a click folds it again; so does leaving the tab. In the terminal and the webchat.
+-- eventshidemgr.lua: runs of joins, parts, quits and nick changes folded into one row, "3 joined, 2 left" with a mark that turns when it is open.
+-- A click opens the run and a click folds it again; so does leaving the tab. In the terminal and the webchat.
 -- On your screens only: the logs and the scrollback keep every line. Kicks, your own joins and parts and every
 -- message end a run, and a lone join stays a normal line.
 isekur.setting("names", false, "c", "name who joined, left or renamed in the row: 3 joined (a, b, +1)")
