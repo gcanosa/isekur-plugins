@@ -168,5 +168,15 @@
   "official": true,
   "description": "/radio: 24/7 radio, audio only. YouTube's live channels (Claude FM, State FM, Pink Floyd style, 80s and synthwave radios) and plain internet radio (SomaFM, Radio Paradise); a window with a cassette, a filter, a favorite star and mute. The webchat plays it, on a phone too with the screen locked; the terminal plays it in the background. Needs ffmpeg (and yt-dlp for YouTube) on the machine iSekur runs on",
   "sha256": "dd163f6b70d8efcc2b4e91c5c3e067c210791c6b93ee280b30d4228012991ef4"
+ },
+ {
+  "name": "eventshidemgr",
+  "version": "1.0",
+  "api": 14,
+  "author": "Gerardo Canosa",
+  "contact": "gera.canosa@gmail.com",
+  "official": true,
+  "description": "Folds runs of joins, parts, quits and nick changes into one row, \"3 joined, 2 left ▸\", in the terminal and the webchat. A click opens the run and folds it again, and so does leaving the tab. Kicks, your own joins and every message end a run. Optional: the nicks in the row (names), nick changes counted (nicks), and the summary rows kept in a /quiet tab (quiet = fold). On your screens only",
+  "sha256": "f63804d0ff56d36c7fc02ce5a564a471d9f40621884603765825bff5d15c15a2"
  }
 ]
