@@ -187,6 +187,6 @@
   "contact": "gera.canosa@gmail.com",
   "official": true,
   "description": "Warms the colors after dark, like f.lux or Night Shift, in the terminal and the webchat and whatever the theme. Night is sunset to sunrise where you are (a city or coordinates, so iSekur on a server in another country still follows your sun) or hours you pick. It changes over minutes, switching it on or off takes a minute too, and a preview sweeps day to night and back. A window with a sun and a moon, /twilight preview, a manual temperature, a red-only darkroom",
-  "sha256": "fa96b46cfbaac852eb40cf60df38c9b8dec3347e46e0d04af6c2149da1cd184b"
+  "sha256": "01a800dd4a067044e7fba04a380fdc9e4bbebf588bbd1499e24c57b1bdc292af"
  }
 ]

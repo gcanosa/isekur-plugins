@@ -18,6 +18,7 @@ isekur.setting("dim", 0, "g", "extra darkening at night, in percent (0 to 60)")
 isekur.setting("ramp", 60, "g", "minutes the change takes around sunset and sunrise (the middle is the sunset); 0: at once")
 isekur.setting("fade", 60, "g", "seconds that switching it on or off, a manual change or the end of a pause takes: never a jump (0 to 600)")
 isekur.setting("where", "both", "g", "which screens are tinted", {"both", "terminal", "web"})
+isekur.setting("media", true, "g", "tint the webchat's pictures and videos (the preview plugin's) too; off to see a picture's real colors")
 
 local S = {n = 0, why = "day", said = {}, big = true}  -- n: 0 day to 1 night as of the last update; big: the next change takes `fade`
 
@@ -197,7 +198,7 @@ end
 local function neutral(c) return c[1] >= 0.999 and c[2] >= 0.999 and c[3] >= 0.999 and c[4] <= 0.001 end
 local function apply(r, g, b, d, secs)
   local w = isekur.opt("where")
-  isekur.tint{r = r, g = g, b = b, dim = d, term = w ~= "web", web = w ~= "terminal", fade = secs, out = clamp(isekur.opt("fade"), 0, 600)}
+  isekur.tint{r = r, g = g, b = b, dim = d, term = w ~= "web", web = w ~= "terminal", media = isekur.opt("media"), fade = secs, out = clamp(isekur.opt("fade"), 0, 600)}
   S.cur = {r, g, b, d}
 end
 
@@ -309,7 +310,7 @@ end)
 -- ---- running ---------------------------------------------------------------------------------------------------------------------------------
 local function sig()
   local o = {}
-  for _, k in ipairs({"mode", "location", "start", "end", "utc_offset", "day", "night", "dim", "ramp", "fade", "where"}) do o[#o + 1] = tostring(isekur.opt(k)) end
+  for _, k in ipairs({"mode", "location", "start", "end", "utc_offset", "day", "night", "dim", "ramp", "fade", "where", "media"}) do o[#o + 1] = tostring(isekur.opt(k)) end
   return table.concat(o, "|")
 end
 
