@@ -1,4 +1,4 @@
--- version: 1.0
+-- version: 1.1
 -- author: Gerardo Canosa
 -- contact: gera.canosa@gmail.com
 -- twilight: warms the colors after dark, like f.lux or Night Shift, in the terminal and the webchat and whatever the theme. Night is
@@ -7,16 +7,16 @@
 -- /twilight opens its window (Preview sweeps day to night and back, a few seconds each way); /twilight preview does the same from the keyboard.
 -- The location goes to open-meteo.com (a city's coordinates, then the sun's times); nothing else leaves this machine.
 
-isekur.setting("mode", "sun", "g", "when it is night: sun (sunset to sunrise at your location; the hours below until you set one), schedule (start to end) or always", {"sun", "schedule", "always"})
-isekur.setting("location", "", "g", "where you are, for the sun and the clock: a city (Berlin, Springfield US) or latitude,longitude (52.52,13.41). Not where iSekur runs")
-isekur.setting("start", "21:00", "g", "schedule: night starts (HH:MM, your location's clock), also the hours used until the sun's times arrive")
+isekur.setting("mode", "sun", "g", "when it is night: sun (sunset to sunrise there), schedule (start to end) or always", {"sun", "schedule", "always"})
+isekur.setting("location", "", "g", "where YOU are: a city (Berlin, Springfield US) or latitude,longitude. Not where iSekur runs")
+isekur.setting("start", "21:00", "g", "schedule: night starts (HH:MM, the clock where you are); also used until the sun's times arrive")
 isekur.setting("end", "07:00", "g", "schedule: night ends (HH:MM)")
-isekur.setting("utc_offset", "", "g", "hours from UTC where you are (-3, 5.5) when you don't set a location; empty: the location's, else this machine's")
+isekur.setting("utc_offset", "", "g", "hours from UTC where you are (-3, 5.5) with no location; empty: the location's, else this machine's")
 isekur.setting("day", 6500, "g", "color temperature by day, in kelvin: 6500 leaves the colors alone", nil)
-isekur.setting("night", 3400, "g", "color temperature at night, in kelvin: 3400 is warm, 2700 warmer, 1900 candle light (1000 to 6500)")
+isekur.setting("night", 3400, "g", "color temperature at night, in kelvin: 3400 warm, 2700 warmer, 1900 candle light (1000 to 6500)")
 isekur.setting("dim", 0, "g", "extra darkening at night, in percent (0 to 60)")
 isekur.setting("ramp", 60, "g", "minutes the change takes around sunset and sunrise (the middle is the sunset); 0: at once")
-isekur.setting("fade", 60, "g", "seconds that switching it on or off, a manual change or the end of a pause take: never a jump (0 to 600)")
+isekur.setting("fade", 60, "g", "seconds that switching it on or off, a manual change or the end of a pause takes: never a jump (0 to 600)")
 isekur.setting("where", "both", "g", "which screens are tinted", {"both", "terminal", "web"})
 
 local S = {n = 0, why = "day", said = {}, big = true}  -- n: 0 day to 1 night as of the last update; big: the next change takes `fade`
@@ -270,6 +270,13 @@ local function show_window()
   isekur.window{title = "Twilight", display = describe(t), sky = S.n, buttons = {"Preview", S.pause and "Resume" or "Off 1h", "Close"}}
 end
 
+-- the plugin manager's page for twilight (/plugin, Configure): where it is now, a sun and a moon, and Preview and Off 1h, so the settings can be tried
+-- as they are changed. isekur.panel came with API 15 after tint: an older build of it has no panel, only the window and the commands
+local function publish_panel(t)
+  local d = describe(t)
+  isekur.panel{lines = {d[1], d[2], d[3]}, sky = S.n, actions = {{"Preview", "/twilight preview"}, S.pause and {"Resume", "/twilight auto"} or {"Off 1h", "/twilight off 60"}}}
+end
+
 isekur.on("window", function(e)
   if e.action ~= "button" then return end
   if e.button == "Preview" then start_preview()
@@ -324,4 +331,5 @@ isekur.on("tick", function()
     if S.big or S.force or t - (S.at or 0) >= 10 then S.at = t; update(t) end
   end
   if isekur.window() then show_window() end
+  if isekur.panel then publish_panel(t) end
 end)
