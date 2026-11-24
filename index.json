@@ -191,12 +191,12 @@
  },
  {
   "name": "dropzone",
-  "version": "1.0",
+  "version": "1.1",
   "api": 16,
   "author": "Gerardo Canosa",
   "contact": "gera.canosa@gmail.com",
   "official": true,
   "description": "Give iSekur a file and it goes to a file host, and a box asks what to do with the link: send it to the tab, copy it, or send it to another channel. Drag a file onto the webchat (the page shows what letting go does), paste a screenshot, tap the paperclip on a phone, drop a file on the terminal or /upload it",
-  "sha256": "118917563398505ea425727b1d2ecb86179580562503959a1d8094900180b484"
+  "sha256": "061e1cf9bb747f6a794b6090dd55c0ce9f8e8c38882f118f6feed86bb353bf91"
  }
 ]
