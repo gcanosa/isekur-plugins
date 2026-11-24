@@ -38,3 +38,5 @@ station to you and not through the server; the station sees your address, not th
 page on https can't play them) go through the machine iSekur runs on, as does the terminal's speakers. If the browser can't play a station
 (a format it lacks such as some HLS streams, a network that blocks it, no sound within 15 seconds) the plugin tries it through that machine
 before moving on. `/plugin set radio source host` sends everything through the machine.
+
+What the machine iSekur runs on needs (not the one your browser is on): nothing for a station your browser plays itself (https, not YouTube); ffmpeg for an http one, which iSekur relays because a page on https can't play http audio; ffmpeg and yt-dlp for a YouTube channel. A station that can't play on your setup is marked "✕ needs ffmpeg on iSekur's machine" in its row, and picking one says why and moves on to the next one that can.

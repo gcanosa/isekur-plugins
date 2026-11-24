@@ -1,10 +1,11 @@
--- version: 1.3
+-- version: 1.4
 -- author: Gerardo Canosa
 -- contact: gera.canosa@gmail.com
 -- radio.lua: /radio, internet radio in the webchat, on your phone, or on this machine: a hand-picked list (Recommended), the Radio Browser
 -- directory of ~50,000 stations (Browse and Search), and your own (Mine).
 -- The webchat plays the stream in its page (audio only, it keeps going with the screen locked); the terminal plays it with
--- mpv, ffplay or vlc. YouTube lives need yt-dlp and ffmpeg on the machine iSekur runs on; plain streams need only ffmpeg.
+-- mpv, ffplay or vlc. A station the browser plays by itself (https, not YouTube: the default `source`) needs nothing on the machine iSekur runs on;
+-- an http one is relayed by it and needs ffmpeg there, a YouTube live yt-dlp and ffmpeg.
 -- The recommended list comes from the plugin's repository (radio/stations.tsv, kept free of dead streams) and is fetched again every
 -- `refresh` hours; the list below is what it starts with and falls back to. The directory is https://www.radio-browser.info (a community
 -- project): Browse and Search ask it, and playing one of its stations tells it so (that is what makes the votes and trends); set
@@ -16,7 +17,7 @@ end
 
 isekur.setting("output", "auto", "g", "where it plays: auto (the webchat if one is open, else this machine), web, host (this machine's speakers) or both",
                {"auto", "web", "host", "both"})
-isekur.setting("source", "direct", "g", "direct: the webchat's own device connects to https stations itself, so this machine carries no audio (YouTube and http stations, and one the browser can't play, still go through this machine); host: always through this machine",
+isekur.setting("source", "direct", "g", "direct: the webchat's own device connects to https stations itself, so this machine carries no audio (YouTube and http stations, and one the browser can't play, are relayed by the machine iSekur runs on, which needs ffmpeg for that); host: always through that machine",
                {"direct", "host"})
 isekur.setting("stations", "https://raw.githubusercontent.com/gcanosa/isekur-plugins/main/radio/stations.tsv", "g",
                "where the recommended list is fetched from (an https address of a stations.tsv; off: only the built-in list)")
@@ -130,6 +131,31 @@ local now_url = nil    -- the address it was started with
 local now_direct = false  -- whether the webchat's browser connected to it itself (if it can't play it, this machine is the next try)
 local pending = nil    -- a directory station whose address is being asked for
 local chain = nil      -- while a station started from a list is tuning: {list, i, tries, noyt}: if it doesn't work the next one is tried
+
+-- how a station would play now, and what that needs on the machine iSekur runs on (not the one the browser is on): a station the browser connects to
+-- itself (https, not YouTube) needs nothing; the others are relayed by iSekur: ffmpeg, and yt-dlp for YouTube. Looked at once a second
+local ctx_at, ctx_v = 0, nil
+local function ctx()
+  local t = isekur.time()
+  if ctx_v == nil or t ~= ctx_at then
+    ctx_at = t
+    ctx_v = {st = isekur.radio(), o = isekur.opt("output"), src = isekur.opt("source"), ffmpeg = isekur.which("ffmpeg") ~= nil, ytdlp = isekur.which("yt-dlp") ~= nil}
+  end
+  return ctx_v
+end
+local function lacks(url)  -- nil when this machine can play it as things are; else (why, a short word for its row)
+  local c = ctx()
+  local host = c.o == "host" or c.o == "both" or (c.o == "auto" and not c.st.web)
+  if c.src == "direct" and c.st.web and not host and url:match("^https://") and not youtube(url) then return nil end
+  local need = {}
+  if not c.ffmpeg then need[#need + 1] = "ffmpeg" end
+  if youtube(url) and not c.ytdlp then need[#need + 1] = "yt-dlp" end
+  if #need == 0 then return nil end
+  local list = table.concat(need, " and ")
+  local why = youtube(url) and "YouTube can't play in a browser by itself" or not url:match("^https://") and "a browser can only play https streams by itself"
+              or c.src ~= "direct" and "source is host: every station goes through that machine" or "no webchat is open, so it goes through that machine"
+  return "needs " .. list .. " on the machine iSekur runs on (" .. why .. ")", "\xe2\x9c\x95 needs " .. list .. " on iSekur's machine"
+end
 
 local function tell(text, note)
   local srv, target = out_tab[1], out_tab[2]
@@ -448,17 +474,16 @@ local function failed(s, why)
   end
   local c = chain
   if not c then tell(s.name .. ": " .. why, false); return end
-  if why:find("ffmpeg isn't installed", 1, true) or why:find("no player", 1, true) then chain = nil; tell(why, false); return end  -- every station would say the same
-  if why:find("yt-dlp isn't installed", 1, true) then c.noyt = true end
+  if why:find("no player", 1, true) then chain = nil; tell(why, false); return end  -- every station would say the same
   c.tries = c.tries + 1
   local nxt
-  for i = c.i + 1, #c.list do
+  for i = c.i + 1, #c.list do  -- the next one that can play here: a missing ffmpeg or yt-dlp rules out only the stations that need it
     local e = c.list[i]
-    if is_station(e) and not (c.noyt and youtube(e.url)) then nxt = i; break end
+    if is_station(e) and not lacks(e.url) then nxt = i; break end
   end
   if not nxt or c.tries > 4 then
     chain = nil
-    tell(s.name .. ": " .. why .. (c.tries > 4 and ". Stopped after 4 stations that didn't work" or ". Nothing else in this list to try"), false)
+    tell(s.name .. ": " .. why .. (c.tries > 4 and ". Stopped after 4 stations that didn't work" or ". Nothing else in this list can play here"), false)
     return
   end
   c.i = nxt
@@ -475,6 +500,8 @@ function begin_play(s)
   local function go(url)
     if mine_gen ~= playgen then return end
     pending = nil
+    local miss = lacks(url)
+    if miss then now_st = s; failed(s, miss); refresh(); return end
     local ok, why = start_radio(s, url)
     if not ok then failed(s, why) end
     refresh()
@@ -617,7 +644,9 @@ function refresh(force)
   local items, subs, anysub = {}, {}, false
   for i, e in ipairs(ents) do
     items[i], subs[i] = e.name, e.sub or ""
-    if e.sub then anysub = true end
+    local short = is_station(e) and select(2, lacks(e.url)) or nil
+    if short then subs[i] = short .. (e.sub and e.sub ~= "" and " \xc2\xb7 " .. e.sub or "") end
+    if e.sub or short then anysub = true end
   end
   local l1, l2
   -- the first line's symbol says at a glance what it's doing: ■ off air, ◌ tuning, ♪ playing

@@ -161,13 +161,13 @@
  },
  {
   "name": "radio",
-  "version": "1.3",
+  "version": "1.4",
   "api": 17,
   "author": "Gerardo Canosa",
   "contact": "gera.canosa@gmail.com",
   "official": true,
-  "description": "/radio: internet radio, audio only, in four tabs. Recommended: a hand-picked list (YouTube's live channels, SomaFM, Radio Paradise...). Browse and Search: about 50,000 stations from the Radio Browser community directory by country, genre, language, top voted and trending, or by name. Mine: your own, kept with Add. A window with a cassette, tabs, a favorite star and mute; a station that doesn't play is skipped with the reason. The webchat plays it, on a phone too with the screen locked; the terminal plays it in the background. Needs ffmpeg (and yt-dlp for YouTube) on the machine iSekur runs on",
-  "sha256": "1d66720c5e35855b83392acf8311421b3350c6ce461dbc0a87332b73611d7f1d"
+  "description": "/radio: internet radio, audio only, in four tabs. Recommended: a hand-picked list (YouTube's live channels, SomaFM, Radio Paradise...). Browse and Search: about 50,000 stations from the Radio Browser community directory by country, genre, language, top voted and trending, or by name. Mine: your own, kept with Add. A window with a cassette, tabs, a favorite star and mute; a station that doesn't play is skipped with the reason. The webchat plays it, on a phone too with the screen locked; the terminal plays it in the background. https stations play straight in your browser; http ones need ffmpeg on the machine iSekur runs on (and YouTube ones yt-dlp too), and a station that can't play on your setup says so in its row",
+  "sha256": "59c7691ae9ec17f4d12fc56c018b760e71fa51127f1e2cfd57837db446e3f824"
  },
  {
   "name": "eventshidemgr",
