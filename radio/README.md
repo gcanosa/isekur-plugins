@@ -30,3 +30,11 @@ It is a third party: what you search for and the stations you play are known to 
 votes and trends), nothing else is sent, and the requests say `iSekur-radio`. Its stations are not checked by `check.py`: one that doesn't
 play is reported with the reason and the next one in the list is tried. `Add` keeps a station in Mine with its directory id, so it is found
 again when its stream address changes.
+
+## Where the audio goes
+
+By default (`source` direct) the webchat's own browser connects to an https station, so with iSekur on a server the audio goes from the
+station to you and not through the server; the station sees your address, not the server's. YouTube channels and plain http stations (a
+page on https can't play them) go through the machine iSekur runs on, as does the terminal's speakers. If the browser can't play a station
+(a format it lacks such as some HLS streams, a network that blocks it, no sound within 15 seconds) the plugin tries it through that machine
+before moving on. `/plugin set radio source host` sends everything through the machine.

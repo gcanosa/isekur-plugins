@@ -1,4 +1,4 @@
--- version: 1.2
+-- version: 1.3
 -- author: Gerardo Canosa
 -- contact: gera.canosa@gmail.com
 -- radio.lua: /radio, internet radio in the webchat, on your phone, or on this machine: a hand-picked list (Recommended), the Radio Browser
@@ -16,8 +16,8 @@ end
 
 isekur.setting("output", "auto", "g", "where it plays: auto (the webchat if one is open, else this machine), web, host (this machine's speakers) or both",
                {"auto", "web", "host", "both"})
-isekur.setting("source", "host", "g", "host: this machine fetches the stream and relays it to every device (YouTube needs this); direct: the webchat's own device connects to plain https stations, so this machine carries no audio",
-               {"host", "direct"})
+isekur.setting("source", "direct", "g", "direct: the webchat's own device connects to https stations itself, so this machine carries no audio (YouTube and http stations, and one the browser can't play, still go through this machine); host: always through this machine",
+               {"direct", "host"})
 isekur.setting("stations", "https://raw.githubusercontent.com/gcanosa/isekur-plugins/main/radio/stations.tsv", "g",
                "where the recommended list is fetched from (an https address of a stations.tsv; off: only the built-in list)")
 isekur.setting("refresh", 24, "g", "hours between recommended list updates (0: never)")
@@ -126,6 +126,8 @@ local tab = T_REC
 local cur = 0          -- the row the window's cursor is on
 local out_tab = {}     -- the tab the last command was typed in: where its answers go
 local now_st = nil     -- the station last started (what /radio save keeps)
+local now_url = nil    -- the address it was started with
+local now_direct = false  -- whether the webchat's browser connected to it itself (if it can't play it, this machine is the next try)
 local pending = nil    -- a directory station whose address is being asked for
 local chain = nil      -- while a station started from a list is tuning: {list, i, tries, noyt}: if it doesn't work the next one is tried
 
@@ -420,14 +422,14 @@ local function playing_index(list)
   return 0
 end
 
-local function start_radio(s, url)  -- the radio on url: true, or false and why
+local function start_radio(s, url, relay)  -- the radio on url (relay: through this machine, not the browser itself): true, or false and why
   local o, st = isekur.opt("output"), isekur.radio()
   local host = o == "host" or o == "both" or (o == "auto" and not st.web)
-  -- direct: the browser connects to a plain https station itself; YouTube, http ones and the terminal's speakers go through this machine
-  local direct = isekur.opt("source") == "direct" and st.web and not host and url:match("^https://") ~= nil and not youtube(url)
-  if isekur.opt("source") == "direct" and not direct then tell(s.name .. " goes through this machine (" .. (youtube(url) and "YouTube can't be played straight from a browser" or not st.web and "no webchat is open" or "it isn't a plain https stream") .. ")", true) end
+  -- direct: the browser connects to an https station itself (the webchat is usually far from here: the audio doesn't go through this machine);
+  -- YouTube, http ones (a page on https can't play them), the terminal's speakers and a station the browser couldn't play go through this machine
+  local direct = not relay and isekur.opt("source") == "direct" and st.web and not host and url:match("^https://") ~= nil and not youtube(url)
   local ok, why = isekur.radio(url, {name = s.name, host = host, direct = direct, volume = vol()})
-  now_st = s
+  now_st, now_url, now_direct = s, url, direct and ok
   if not ok then return false, why end
   if o == "web" and not st.web then tell("No webchat is open: open it to hear " .. s.name, true) end
   return true
@@ -437,6 +439,13 @@ local begin_play
 -- it didn't start (or never gave sound): inside a list the next station is tried, saying why this one wasn't (a few times: a list of dead ones isn't walked to its end)
 local function failed(s, why)
   why = why:gsub("^%[[^%]]*%] *", "")  -- ffmpeg's "[tls @ 0x7f...]" tells the reader nothing
+  if now_direct and now_url then  -- the browser couldn't play it (HLS, a codec, a network that blocks it): ffmpeg here may, so that first
+    now_direct = false
+    tell(s.name .. ": " .. why .. ". Trying it through this machine", true)
+    local ok, why2 = start_radio(s, now_url, true)
+    if ok then refresh(); return end
+    why = why2
+  end
   local c = chain
   if not c then tell(s.name .. ": " .. why, false); return end
   if why:find("ffmpeg isn't installed", 1, true) or why:find("no player", 1, true) then chain = nil; tell(why, false); return end  -- every station would say the same
@@ -483,7 +492,7 @@ function begin_play(s)
 end
 
 local function stop()
-  chain, pending, playgen = nil, nil, playgen + 1
+  chain, pending, playgen, now_direct = nil, nil, playgen + 1, false
   isekur.radio(false)
   refresh()
 end
@@ -622,7 +631,7 @@ function refresh(force)
     l2 = "finding the stream"
   else
     l1 = "\xe2\x99\xaa " .. st.name
-    l2 = "playing on " .. where(st) .. (st.direct and ", connected directly" or "") .. (st.muted and "  \xc2\xb7  muted" or "")
+    l2 = "playing on " .. where(st) .. (st.direct and ", connected directly" or st.web and not st.host and isekur.opt("source") == "direct" and ", through this machine" or "") .. (st.muted and "  \xc2\xb7  muted" or "")
   end
   local b, icons = buttons(st)
   local v = current_view()
@@ -861,9 +870,13 @@ local sig = ""
 isekur.on("tick", function()
   if not fetching and due() then fetch(false) end
   local st = isekur.radio()
-  if chain and not pending then
-    if st.state == "playing" then chain = nil
-    elseif st.state == "off" and st.err ~= "" and now_st then failed(now_st, st.err) end
+  if not pending then
+    if st.state == "off" and st.err ~= "" and now_st and (chain or now_direct) then failed(now_st, st.err)  -- (a direct one that dropped later too: this machine is the next try)
+    elseif chain and st.state == "playing" and not st.direct then chain = nil
+    elseif chain and st.state == "playing" then  -- direct: it plays at once for iSekur, the browser says within 15 seconds if it doesn't
+      chain.since = chain.since or isekur.time()
+      if isekur.time() - chain.since > 20 then chain = nil end
+    end
   end
   if not isekur.window() then return end
   local now = st.state .. st.name .. st.err .. tostring(st.web) .. tostring(st.muted) .. tostring(pending and pending.name)
