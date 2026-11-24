@@ -3,7 +3,7 @@
 `stations.tsv` is the list every iSekur with the radio plugin fetches (when it is older than the plugin's `refresh` setting,
 24 hours by default; `/radio refresh` fetches it now). The plugin keeps the last good copy, so it works offline and a broken
 or empty reply never replaces it. Point `stations` at your own list (an https address of a file in this format) with
-`/plugin set radio stations <address>`.
+`/plugin set radio stations <address>` (`off`: only the list built into the plugin).
 
 One station per line: `name`, a TAB, and the address. Lines starting with `#` are comments.
 
@@ -21,3 +21,12 @@ addresses), so it changes nothing and exits 2. The `radio stations` workflow run
 `python3 radio/check.py` yourself (`--dry` shows what it would do, `--self-test` checks its rules).
 
 To add a station, send a line for `stations.tsv`. To bring one back by hand, move its line from `removed.tsv`.
+
+## The directory (Browse and Search)
+
+Besides this list, the plugin's Browse and Search tabs use the [Radio Browser](https://www.radio-browser.info) directory (about 50,000
+stations, kept by its community): `directory` is its server (`https://de1.api.radio-browser.info`), and `off` turns Browse and Search off (`/plugin set radio directory off`; with no value it goes back to the default).
+It is a third party: what you search for and the stations you play are known to it (playing one counts a listen, which is what makes its
+votes and trends), nothing else is sent, and the requests say `iSekur-radio`. Its stations are not checked by `check.py`: one that doesn't
+play is reported with the reason and the next one in the list is tried. `Add` keeps a station in Mine with its directory id, so it is found
+again when its stream address changes.
