@@ -1,10 +1,11 @@
--- version: 1.2
+-- version: 1.3
 -- author: Gerardo Canosa
 -- contact: gera.canosa@gmail.com
 -- dropzone: give iSekur a file and it goes to a file host, and you pick what happens to the link. Drag it onto the webchat (the page shows
 -- what letting go does), paste a screenshot there, tap the paperclip on a phone, drop it on the terminal (a path: iSekur takes it when it
 -- is a file) or /upload <file>. A box asks first: send the link to this tab, copy it only, or send it to another channel; nothing leaves
--- before you answer. litterbox first (no account, the link goes away after `expire`), uguu when litterbox says no (file hosts often refuse
+-- before you answer, and the box says which third party gets the file (iSekur has nothing to do with it: this plugin only automates the
+-- sharing) and takes an optional message that goes before the link. litterbox first (no account, the link goes away after `expire`), uguu when litterbox says no (file hosts often refuse
 -- a server's address, and the file leaves from the machine iSekur runs on). The link is public: whoever has it can open the file.
 isekur.setting("service", "litterbox uguu", "g", "hosts in order, the next when one says no: litterbox, uguu, catbox, imgur (needs imgur_id) or an https:// address")
 isekur.setting("expire", "72h", "g", "litterbox: how long the link lasts", {"1h", "12h", "24h", "72h"})
@@ -50,6 +51,7 @@ local function services(e)
   local all, why = {}, nil
   for w in isekur.opt("service"):gmatch("%S+") do
     local s, bad = one(w)
+    if s then s.host = s.url:match("^https://([^/:]+)") end  -- what the box and the notes call it: the address, not a nickname
     if not s then why = why or bad
     elseif e.size > s.max then why = why or (e.name .. " is " .. human(e.size) .. ": " .. s.name .. " takes " .. human(s.max) .. " at most")
     elseif s.kinds and not s.kinds[e.kind] then why = why or (s.name .. " takes images and video, not " .. e.kind .. " files")
@@ -58,7 +60,7 @@ local function services(e)
   if #all == 0 then return nil, why or "no service is set: /plugin set dropzone service litterbox" end
   local out, skipped, now = {}, {}, isekur.time()
   for _, s in ipairs(all) do
-    if (refused[s.name] or 0) > now then skipped[#skipped + 1] = s.name else out[#out + 1] = s end
+    if (refused[s.name] or 0) > now then skipped[#skipped + 1] = s.host else out[#out + 1] = s end
   end
   if #out == 0 then return all, nil, {} end
   return out, nil, skipped
@@ -87,7 +89,7 @@ local function finish(id, act, r)
              or (r.error and (r.error:find("closed the connection", 1, true) or r.error:find("didn't answer", 1, true)))
   if url then refused[j.svc.name] = nil elseif no then refused[j.svc.name] = isekur.time() + SKIP end
   if not url and j.si < #j.svcs and not (r.error and r.error:find("private network", 1, true)) then  -- this host said no: the next one
-    note(j, j.svc.name .. " didn't take " .. j.name .. " (" .. (r.error or ("HTTP " .. r.status)) .. "), trying " .. j.svcs[j.si + 1].name .. (j.svcs[j.si + 1].life and " (the link lasts " .. j.svcs[j.si + 1].life .. ")" or "") .. "...")
+    note(j, j.svc.host .. " didn't take " .. j.name .. " (" .. (r.error or ("HTTP " .. r.status)) .. "), trying " .. j.svcs[j.si + 1].host .. (j.svcs[j.si + 1].life and " (the link lasts " .. j.svcs[j.si + 1].life .. ")" or "") .. "...")
     j.si = j.si + 1
     j.svc = j.svcs[j.si]
     return go(id, act)
@@ -100,18 +102,19 @@ local function finish(id, act, r)
                 (no and ". The file leaves from the machine iSekur runs on, and hosts often refuse a server's address: try another service (/plugin set dropzone service)" or ""))
   end
   jobs[id], last_fail = nil, nil
+  local out = (j.msg and j.msg ~= "" and j.msg .. " " or "") .. url  -- the message, if the user typed one, then the link
   if act == "send" then
-    isekur.say(j.srv, j.target, url)
-    if j.origin and j.origin ~= j.target then note(j, j.name .. " sent to " .. j.target .. ": " .. url) end
+    isekur.say(j.srv, j.target, out)
+    if j.origin and j.origin ~= j.target then note(j, j.name .. " sent to " .. j.target .. ": " .. out) end
   else
-    isekur.copy(url)
-    note(j, j.name .. ": " .. url .. " (copied)")
+    isekur.copy(out)
+    note(j, j.name .. ": " .. out .. " (copied)")
   end
 end
 
 function go(id, act)
   local j = jobs[id]
-  note(j, "sending " .. j.name .. " (" .. human(j.size) .. ") to " .. j.svc.name .. (j.svc.life and ", the link lasts " .. j.svc.life or "") .. "...")
+  note(j, "sending " .. j.name .. " (" .. human(j.size) .. ") to " .. j.svc.host .. (j.svc.life and ", the link lasts " .. j.svc.life or "") .. "...")
   local s = j.svc
   local ok, why = isekur.upload(id, {url = s.url, field = s.kinds and s.kinds[j.kind] or s.field, fields = s.fields, headers = s.headers, type = j.type},
                                 function(r) finish(id, act, r) end)
@@ -120,20 +123,23 @@ end
 
 local function ask(id)
   local j = jobs[id]
+  local hosts = j.svc.host .. (#j.svcs > 1 and " (or " .. j.svcs[2].host .. " if it refuses)" or "")
   local text = {j.name .. " · " .. human(j.size) .. " · " .. j.kind,
-                "to " .. j.svc.name .. (j.svc.life and ", the link lasts " .. j.svc.life or ", a public link") ..
-                (#j.svcs > 1 and " (" .. j.svcs[2].name .. " if it says no)" or "")}
+                "to " .. j.svc.host .. (j.svc.life and ", the link lasts " .. j.svc.life or ", a public link") ..
+                (#j.svcs > 1 and " (" .. j.svcs[2].host .. " if it says no)" or ""),
+                "A third party, not iSekur: the file is uploaded to " .. hosts .. ". iSekur has nothing to do with them, this plugin only " ..
+                "automates the sharing. Anyone with the link can open the file."}
   if #j.skipped > 0 then text[#text + 1] = table.concat(j.skipped, ", ") .. " said no to this machine a while ago: left out for now" end
   if j.e2e then text[#text + 1] = "!This tab is encrypted. The file will not be." end
   local items, acts = {}, {}
   if j.target then items[#items + 1], acts[#acts + 1] = "Send the link to " .. j.target, "send" end
-  items[#items + 1], acts[#acts + 1] = "Copy the link only", "copy"
+  items[#items + 1], acts[#acts + 1] = "Copy the link", "copy"
   j.chans = {}
   for _, c in ipairs(j.srv and isekur.channels(j.srv) or {}) do if c ~= j.target then j.chans[#j.chans + 1] = c end end
   if #j.chans > 0 then items[#items + 1], acts[#acts + 1] = "Send it to another channel...", "other" end
   items[#items + 1], acts[#acts + 1] = "Cancel", "cancel"
   j.acts, j.stage = acts, "first"
-  isekur.choose{id = id, title = "Send a file", text = text, items = items}
+  isekur.choose{id = id, title = "Send a file", text = text, items = items, input = "Message (optional)"}
 end
 
 local function cancel(id) jobs[id] = nil isekur.upload(id, false) end
@@ -160,6 +166,7 @@ isekur.on("choice", function(e)
     return go(e.id, "send")
   end
   local a = j.acts[e.index] or "cancel"
+  j.msg = e.text  -- what the user typed in the box (goes before the link)
   if a == "other" then
     j.stage = "pick"
     local items = {}
