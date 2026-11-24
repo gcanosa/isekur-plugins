@@ -1,4 +1,4 @@
--- version: 1.1
+-- version: 1.2
 -- author: Gerardo Canosa
 -- contact: gera.canosa@gmail.com
 -- radio.lua: /radio, internet radio in the webchat, on your phone, or on this machine: a hand-picked list (Recommended), the Radio Browser
@@ -391,7 +391,11 @@ local function current_view()
 end
 local function entries()
   if tab == T_REC then return recs() end
-  if tab == T_MINE then return mine() end
+  if tab == T_MINE then
+    local list = mine()
+    if #list == 0 then return {{name = "Nothing here yet", sub = "Add (+) a station from Browse or Search", note = true}} end
+    return list
+  end
   if not dir_base() then
     return {{name = "The station directory is off", sub = "/plugin set radio directory   (alone: back to the default)", note = true}}
   end
@@ -571,7 +575,7 @@ local function buttons(st)
 end
 
 local function context(ents)
-  if tab == T_MINE then return #ents .. " of your own, the star is your favorite" end
+  if tab == T_MINE then return (#mine() > 0 and #mine() or "none") .. " of your own, the star is your favorite" end
   if tab == T_BROWSE then
     local names = {}
     for _, v in ipairs(B.stack) do names[#names + 1] = v.crumb end
