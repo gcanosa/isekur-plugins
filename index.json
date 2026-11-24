@@ -188,5 +188,15 @@
   "official": true,
   "description": "Warms the colors after dark, like f.lux or Night Shift, in the terminal and the webchat and whatever the theme. Night is sunset to sunrise where you are (a city or coordinates, so iSekur on a server in another country still follows your sun) or hours you pick. It changes over minutes, switching it on or off takes a minute too, and a preview sweeps day to night and back. A window with a sun and a moon, /twilight preview, a manual temperature, a red-only darkroom",
   "sha256": "01a800dd4a067044e7fba04a380fdc9e4bbebf588bbd1499e24c57b1bdc292af"
+ },
+ {
+  "name": "dropzone",
+  "version": "1.0",
+  "api": 16,
+  "author": "Gerardo Canosa",
+  "contact": "gera.canosa@gmail.com",
+  "official": true,
+  "description": "Give iSekur a file and it goes to a file host, and a box asks what to do with the link: send it to the tab, copy it, or send it to another channel. Drag a file onto the webchat (the page shows what letting go does), paste a screenshot, tap the paperclip on a phone, drop a file on the terminal or /upload it",
+  "sha256": "118917563398505ea425727b1d2ecb86179580562503959a1d8094900180b484"
  }
 ]
